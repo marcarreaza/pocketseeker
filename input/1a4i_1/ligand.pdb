@@ -1,0 +1,150 @@
+MODEL        0
+ATOM      0  PA  NDP A   1      -5.712  47.284  25.538  1.00  0.00           P  
+ATOM      1  O1A NDP A   1      -5.606  46.377  24.431  1.00  0.00           O  
+ATOM      2  O2A NDP A   1      -7.005  47.958  25.907  1.00  0.00           O  
+ATOM      3  O5B NDP A   1      -5.215  46.424  26.847  1.00  0.00           O  
+ATOM      4  C5B NDP A   1      -5.302  47.041  28.129  1.00  0.00           C  
+ATOM      5  C4B NDP A   1      -4.809  45.954  29.064  1.00  0.00           C  
+ATOM      6  O4B NDP A   1      -4.945  46.499  30.396  1.00  0.00           O  
+ATOM      7  C3B NDP A   1      -5.463  44.616  29.002  1.00  0.00           C  
+ATOM      8  O3B NDP A   1      -4.487  43.574  29.220  1.00  0.00           O  
+ATOM      9  C2B NDP A   1      -6.370  44.612  30.195  1.00  0.00           C  
+ATOM     10  O2B NDP A   1      -6.704  43.356  30.784  1.00  0.00           O  
+ATOM     11  C1B NDP A   1      -5.671  45.544  31.123  1.00  0.00           C  
+ATOM     12  N9A NDP A   1      -6.556  46.149  32.132  1.00  0.00           N  
+ATOM     13  C8A NDP A   1      -7.725  46.902  31.931  1.00  0.00           C  
+ATOM     14  N7A NDP A   1      -8.260  47.241  33.083  1.00  0.00           N  
+ATOM     15  C5A NDP A   1      -7.444  46.730  34.057  1.00  0.00           C  
+ATOM     16  C6A NDP A   1      -7.472  46.757  35.448  1.00  0.00           C  
+ATOM     17  N6A NDP A   1      -8.477  47.347  36.092  1.00  0.00           N  
+ATOM     18  N1A NDP A   1      -6.501  46.147  36.122  1.00  0.00           N  
+ATOM     19  C2A NDP A   1      -5.515  45.541  35.459  1.00  0.00           C  
+ATOM     20  N3A NDP A   1      -5.388  45.459  34.151  1.00  0.00           N  
+ATOM     21  C4A NDP A   1      -6.405  46.075  33.497  1.00  0.00           C  
+ATOM     22  O3  NDP A   1      -4.641  48.437  25.511  1.00  0.00           O  
+ATOM     23  PN  NDP A   1      -3.215  48.761  24.861  1.00  0.00           P  
+ATOM     24  O1N NDP A   1      -3.402  48.666  23.405  1.00  0.00           O  
+ATOM     25  O2N NDP A   1      -2.205  47.930  25.584  1.00  0.00           O  
+ATOM     26  O5D NDP A   1      -3.024  50.253  25.426  1.00  0.00           O  
+ATOM     27  C5D NDP A   1      -2.943  50.514  26.870  1.00  0.00           C  
+ATOM     28  C4D NDP A   1      -2.653  52.030  27.058  1.00  0.00           C  
+ATOM     29  O4D NDP A   1      -1.458  52.291  26.353  1.00  0.00           O  
+ATOM     30  C3D NDP A   1      -3.715  52.867  26.326  1.00  0.00           C  
+ATOM     31  O3D NDP A   1      -3.992  54.046  27.077  1.00  0.00           O  
+ATOM     32  C2D NDP A   1      -3.134  53.160  24.977  1.00  0.00           C  
+ATOM     33  O2D NDP A   1      -3.675  54.379  24.500  1.00  0.00           O  
+ATOM     34  C1D NDP A   1      -1.646  53.378  25.463  1.00  0.00           C  
+ATOM     35  N1N NDP A   1      -0.723  53.185  24.330  1.00  0.00           N  
+ATOM     36  C2N NDP A   1      -0.034  54.311  23.922  1.00  0.00           C  
+ATOM     37  C3N NDP A   1       0.825  54.155  22.799  1.00  0.00           C  
+ATOM     38  C7N NDP A   1       1.575  55.306  22.318  1.00  0.00           C  
+ATOM     39  O7N NDP A   1       1.808  56.310  23.016  1.00  0.00           O  
+ATOM     40  N7N NDP A   1       1.989  55.343  21.037  1.00  0.00           N  
+ATOM     41  C4N NDP A   1       0.887  52.939  22.158  1.00  0.00           C  
+ATOM     42  C5N NDP A   1       0.179  51.867  22.560  1.00  0.00           C  
+ATOM     43  C6N NDP A   1      -0.632  51.990  23.647  1.00  0.00           C  
+ATOM     44  P2B NDP A   1      -7.369  42.187  30.036  1.00  0.00           P  
+ATOM     45  O1X NDP A   1      -7.802  41.298  31.128  1.00  0.00           O  
+ATOM     46  O2X NDP A   1      -6.370  41.583  29.122  1.00  0.00           O  
+ATOM     47  O3X NDP A   1      -8.571  42.711  29.250  1.00  0.00           O  
+ATOM     48 H5B1 NDP A   1      -6.245  47.297  28.341  1.00  0.00           H  
+ATOM     49 H5B2 NDP A   1      -4.717  47.851  28.179  1.00  0.00           H  
+ATOM     50  H4B NDP A   1      -3.833  45.823  28.888  1.00  0.00           H  
+ATOM     51  H3B NDP A   1      -5.967  44.485  28.148  1.00  0.00           H  
+ATOM     52  H5  NDP A   1      -4.937  42.682  29.176  1.00  0.00           H  
+ATOM     53  H2B NDP A   1      -7.226  45.050  29.921  1.00  0.00           H  
+ATOM     54  H1B NDP A   1      -5.000  44.997  31.624  1.00  0.00           H  
+ATOM     55  H8A NDP A   1      -8.098  47.146  31.036  1.00  0.00           H  
+ATOM     56 H6A1 NDP A   1      -8.490  47.362  37.092  1.00  0.00           H  
+ATOM     57 H6A2 NDP A   1      -9.219  47.775  35.576  1.00  0.00           H  
+ATOM     58  H2A NDP A   1      -4.802  45.106  36.009  1.00  0.00           H  
+ATOM     59 H5D1 NDP A   1      -2.205  49.973  27.274  1.00  0.00           H  
+ATOM     60 H5D2 NDP A   1      -3.809  50.276  27.309  1.00  0.00           H  
+ATOM     61  H4D NDP A   1      -2.580  52.280  28.024  1.00  0.00           H  
+ATOM     62  H3D NDP A   1      -4.552  52.330  26.222  1.00  0.00           H  
+ATOM     63  H16 NDP A   1      -4.939  54.326  26.921  1.00  0.00           H  
+ATOM     64  H2D NDP A   1      -3.233  52.403  24.331  1.00  0.00           H  
+ATOM     65  H18 NDP A   1      -3.890  54.974  25.275  1.00  0.00           H  
+ATOM     66  H1D NDP A   1      -1.518  54.263  25.911  1.00  0.00           H  
+ATOM     67  H2N NDP A   1      -0.134  55.188  24.391  1.00  0.00           H  
+ATOM     68 H7N1 NDP A   1       2.415  56.171  20.673  1.00  0.00           H  
+ATOM     69 H7N2 NDP A   1       1.871  54.542  20.450  1.00  0.00           H  
+ATOM     70  H4N NDP A   1       1.483  52.848  21.360  1.00  0.00           H  
+ATOM     71  H5N NDP A   1       0.247  50.998  22.070  1.00  0.00           H  
+ATOM     72  H6N NDP A   1      -1.169  51.204  23.954  1.00  0.00           H  
+TER      73      NDP A   1
+ENDMDL
+CONECT    1    2    3    4   23
+CONECT    2    1
+CONECT    3    1
+CONECT    4    1    5
+CONECT    5    4    6   49   50
+CONECT    6    5    7    8   51
+CONECT    7    6   12
+CONECT    8    6    9   10   52
+CONECT    9    8   53
+CONECT   10    8   11   12   54
+CONECT   11   10   45
+CONECT   12    7   10   13   55
+CONECT   13   12   14   22
+CONECT   14   13   15   56
+CONECT   15   14   16
+CONECT   16   15   17   22
+CONECT   17   16   18   19
+CONECT   18   17   57   58
+CONECT   19   17   20
+CONECT   20   19   21   59
+CONECT   21   20   22
+CONECT   22   13   16   21
+CONECT   23    1   24
+CONECT   24   23   25   26   27
+CONECT   25   24
+CONECT   26   24
+CONECT   27   24   28
+CONECT   28   27   29   60   61
+CONECT   29   28   30   31   62
+CONECT   30   29   35
+CONECT   31   29   32   33   63
+CONECT   32   31   64
+CONECT   33   31   34   35   65
+CONECT   34   33   66
+CONECT   35   30   33   36   67
+CONECT   36   35   37   44
+CONECT   37   36   38   68
+CONECT   38   37   39   42
+CONECT   39   38   40   41
+CONECT   40   39
+CONECT   41   39   69   70
+CONECT   42   38   43   71
+CONECT   43   42   44   72
+CONECT   44   36   43   73
+CONECT   45   11   46   47   48
+CONECT   46   45
+CONECT   47   45
+CONECT   48   45
+CONECT   49    5
+CONECT   50    5
+CONECT   51    6
+CONECT   52    8
+CONECT   53    9
+CONECT   54   10
+CONECT   55   12
+CONECT   56   14
+CONECT   57   18
+CONECT   58   18
+CONECT   59   20
+CONECT   60   28
+CONECT   61   28
+CONECT   62   29
+CONECT   63   31
+CONECT   64   32
+CONECT   65   33
+CONECT   66   34
+CONECT   67   35
+CONECT   68   37
+CONECT   69   41
+CONECT   70   41
+CONECT   71   42
+CONECT   72   43
+CONECT   73   44
+END

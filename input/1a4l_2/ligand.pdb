@@ -1,0 +1,76 @@
+MODEL        0
+ATOM      0  N1  DCF A   1      28.561  68.883 100.722  1.00  0.00           N  
+ATOM      1  C2  DCF A   1      29.060  68.278  99.666  1.00  0.00           C  
+ATOM      2  N3  DCF A   1      30.360  67.965  99.844  1.00  0.00           N  
+ATOM      3  C9  DCF A   1      29.598  68.951 101.643  1.00  0.00           C  
+ATOM      4  C10 DCF A   1      30.726  68.399 101.130  1.00  0.00           C  
+ATOM      5  N4  DCF A   1      32.069  68.570 101.381  1.00  0.00           N  
+ATOM      6  C5  DCF A   1      32.498  69.022 102.498  1.00  0.00           C  
+ATOM      7  N6  DCF A   1      31.811  69.429 103.577  1.00  0.00           N  
+ATOM      8  C7  DCF A   1      30.436  69.107 103.959  1.00  0.00           C  
+ATOM      9  C8  DCF A   1      29.408  69.582 102.959  1.00  0.00           C  
+ATOM     10  O8  DCF A   1      29.436  71.185 102.922  1.00  0.00           O  
+ATOM     11  C2S DCF A   1      30.536  65.990  98.237  1.00  0.00           C  
+ATOM     12  C3S DCF A   1      30.322  66.427  96.811  1.00  0.00           C  
+ATOM     13  O3S DCF A   1      30.467  65.315  95.916  1.00  0.00           O  
+ATOM     14  O5S DCF A   1      29.870  68.930  95.539  1.00  0.00           O  
+ATOM     15  C5S DCF A   1      31.157  68.363  95.431  1.00  0.00           C  
+ATOM     16  C4S DCF A   1      31.449  67.431  96.605  1.00  0.00           C  
+ATOM     17  O4S DCF A   1      31.590  68.127  97.856  1.00  0.00           O  
+ATOM     18  C1S DCF A   1      31.217  67.212  98.913  1.00  0.00           C  
+ATOM     19  H1  DCF A   1      28.541  68.076  98.836  1.00  0.00           H  
+ATOM     20  H2  DCF A   1      33.493  69.081 102.580  1.00  0.00           H  
+ATOM     21  H3  DCF A   1      32.305  70.033 104.203  1.00  0.00           H  
+ATOM     22  H4  DCF A   1      30.243  69.537 104.841  1.00  0.00           H  
+ATOM     23  H5  DCF A   1      30.356  68.114 104.048  1.00  0.00           H  
+ATOM     24  H6  DCF A   1      28.509  69.305 103.298  1.00  0.00           H  
+ATOM     25  H7  DCF A   1      28.564  71.542 103.258  1.00  0.00           H  
+ATOM     26 H2S1 DCF A   1      31.130  65.187  98.276  1.00  0.00           H  
+ATOM     27 H2S2 DCF A   1      29.663  65.781  98.679  1.00  0.00           H  
+ATOM     28  H3S DCF A   1      29.429  66.863  96.700  1.00  0.00           H  
+ATOM     29  H11 DCF A   1      29.885  65.454  95.115  1.00  0.00           H  
+ATOM     30  H5S DCF A   1      29.206  68.340  95.079  1.00  0.00           H  
+ATOM     31 H5S1 DCF A   1      31.837  69.096  95.420  1.00  0.00           H  
+ATOM     32 H5S2 DCF A   1      31.214  67.842  94.579  1.00  0.00           H  
+ATOM     33  H4S DCF A   1      32.295  66.932  96.417  1.00  0.00           H  
+ATOM     34  H1S DCF A   1      32.040  66.908  99.393  1.00  0.00           H  
+ATOM     35  H17 DCF A   1      27.628  69.223 100.838  1.00  0.00           H  
+TER      36      DCF A   1
+ENDMDL
+CONECT    1    2    4   36
+CONECT    2    1    3   20
+CONECT    3    2    5   19
+CONECT    4    1    5   10
+CONECT    5    3    4    6
+CONECT    6    5    7
+CONECT    7    6    8   21
+CONECT    8    7    9   22
+CONECT    9    8   10   23   24
+CONECT   10    4    9   11   25
+CONECT   11   10   26
+CONECT   12   13   19   27   28
+CONECT   13   12   14   17   29
+CONECT   14   13   30
+CONECT   15   16   31
+CONECT   16   15   17   32   33
+CONECT   17   13   16   18   34
+CONECT   18   17   19
+CONECT   19    3   12   18   35
+CONECT   20    2
+CONECT   21    7
+CONECT   22    8
+CONECT   23    9
+CONECT   24    9
+CONECT   25   10
+CONECT   26   11
+CONECT   27   12
+CONECT   28   12
+CONECT   29   13
+CONECT   30   14
+CONECT   31   15
+CONECT   32   16
+CONECT   33   16
+CONECT   34   17
+CONECT   35   19
+CONECT   36    1
+END
