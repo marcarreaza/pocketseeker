@@ -6,17 +6,4 @@ echo "Installing dependencies..."
 #If not installed
 	pip install mdtraj #PDBtoFIle
 	pip install biopython pandas #site_identifier.py
-
-
-
-
-
-
-conda create --name pocketseeker python=3.10
-
-conda activate pocketseeker
-
-pip install mdtraj biopython pandas
-
-
-
+	sudo apt install hmmer
