@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   PRO A   1     -26.412  30.727  26.686  1.00  0.00           C  
 ATOM      1  O   PRO A   1     -25.323  30.570  26.143  1.00  0.00           O  
 ATOM      2  CA  PRO A   1     -27.648  30.429  25.887  1.00  0.00           C  

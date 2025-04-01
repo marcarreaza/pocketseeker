@@ -6,6 +6,8 @@ echo "Installing dependencies..."
 #If not installed
 	pip install mdtraj #PDBtoFIle
 	pip install biopython pandas #site_identifier.py
+	sudo apt install dssp
+	pip install ProDy
 
 
 

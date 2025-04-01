@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   MET A   1      64.956  42.387  -9.157  1.00  0.00           C  
 ATOM      1  O   MET A   1      64.206  43.038  -8.427  1.00  0.00           O  
 ATOM      2  CA  MET A   1      64.709  42.320 -10.655  1.00  0.00           C  

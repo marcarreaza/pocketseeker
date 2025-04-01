@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   THR A   1      16.986  32.066  59.061  1.00  0.00           C  
 ATOM      1  O   THR A   1      17.582  31.630  60.049  1.00  0.00           O  
 ATOM      2  CA  THR A   1      15.460  32.058  59.034  1.00  0.00           C  

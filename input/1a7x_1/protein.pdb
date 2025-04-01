@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   GLY A   1      -4.844   4.383  15.031  1.00  0.00           C  
 ATOM      1  O   GLY A   1      -4.202   5.354  14.605  1.00  0.00           O  
 ATOM      2  CA  GLY A   1      -5.849   4.600  16.128  1.00  0.00           C  

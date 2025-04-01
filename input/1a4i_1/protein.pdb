@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   ALA A   1      10.996  64.486  45.751  1.00  0.00           C  
 ATOM      1  O   ALA A   1      10.886  63.307  46.129  1.00  0.00           O  
 ATOM      2  CA  ALA A   1      11.623  65.531  46.667  1.00  0.00           C  

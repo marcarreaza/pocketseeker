@@ -1,4 +1,5 @@
-MODEL        0
+HEADER    Sample PDB file
+MODEL        1
 ATOM      0  C   SER A   1      50.338 -16.537  12.391  1.00  0.00           C  
 ATOM      1  O   SER A   1      50.491 -15.601  13.185  1.00  0.00           O  
 ATOM      2  CA  SER A   1      51.152 -17.824  12.527  1.00  0.00           C  
