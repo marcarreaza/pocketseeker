@@ -60,10 +60,13 @@ def compute_sasa(pdb_file):
                         non_polar_sasa += sasa
 
                 sasa_data.append([res_id, res_name, residue.sasa, total_sasa, main_sasa, side_sasa, polar_sasa, non_polar_sasa])
-       
-    return pd.DataFrame(sasa_data, columns=[
-        "Position", "Residue", "SASA", "Total SASA", "Main-chain SASA", "Side-chain SASA", "Polar SASA", "Non-polar SASA"
-    ])
+    
+    df = pd.DataFrame(sasa_data, columns=[
+        "Position", "Residue", "SASA", "Total_SASA", "Main-chain_SASA", "Side-chain_SASA", "Polar_SASA", "Non-polar_SASA"
+            ])
+    df = df.sort_values(by="Position")  # Sort by position
+    
+    return df
 
 # Loop through directories and process each protein
 for folder in os.listdir('../input'):

@@ -40,7 +40,7 @@ for folder in os.listdir('./input'):
                 residue_data.append([res_id, res_name, is_binding_site])
             
             # Convert to DataFrame
-            df = pd.DataFrame(residue_data, columns=["Position", "Residue", "Binding Site"])
+            df = pd.DataFrame(residue_data, columns=["Position", "Residue", "Binding_Site"])
             df = df.sort_values(by="Position")  # Sort by position
             
             # Save as CSV
