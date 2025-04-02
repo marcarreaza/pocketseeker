@@ -87,9 +87,10 @@ def parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file):
 
 def save_df_to_csv(df, output_file, first_file=False):
     """ Guarda el DataFrame en un archivo CSV, sobrescribiéndolo si es el primer archivo procesado. """
+    output_path = os.path.join(os.getcwd(), output_file)
     mode = "w" if first_file else "a"  # "w" para el primer archivo (sobrescribe), "a" para el resto (añade)
     header = first_file  # Solo escribe el encabezado en el primer archivo
-    df.to_csv(output_file, sep=",", index=False, mode=mode, header=header)
+    df.to_csv(output_path, sep=",", index=False, mode=mode, header=header)
     print(f"Datos guardados en {output_file}")
 
 def process_pdb_file(pdb_file):
@@ -111,17 +112,20 @@ def process_pdb_file(pdb_file):
 
     return df
 
-def main(pdb_files, output_file):
+def main(dir, output_file):
     """ Procesa múltiples archivos PDB y guarda los resultados en un único CSV, sobrescribiendo si ya existe. """
-    for i, pdb_file in enumerate(pdb_files):
-        df = process_pdb_file(pdb_file)
-        save_df_to_csv(df, output_file, first_file=(i == 0))  # El primer archivo sobrescribe el CSV
+    for i, folder in enumerate(os.listdir(dir)):
+        folder_path = os.path.join(dir, folder)
+        if os.path.isdir(folder_path):
+            # Construct the path to the protein.pdb inside the folder
+            pdb_file = os.path.join(folder_path, 'protein.pdb')
+            # Check if the protein.pdb file exists
+            if os.path.exists(pdb_file):
+                df = process_pdb_file(pdb_file)
+                save_df_to_csv(df, output_file, first_file=(i == 0))  # El primer archivo sobrescribe el CSV
 
 if __name__ == "__main__":
-    pdb_files = [
-        "../../input/1a2b_1/protein.pdb",
-        "../../input/1a2n_1/protein.pdb"
-    ]  # Lista de archivos PDB a procesar
+    dir = "../../input/"
     output_file = "pssm_and_coevolution.csv"
 
-    main(pdb_files, output_file)
+    main(dir, output_file)

@@ -73,28 +73,32 @@ def theta_tau_extraction(pdb_file):
     return THETA
 
 # ------ Procesamiento de múltiples archivos PDB ------
-def process_pdb_files(pdb_files, output_file="SS_features.csv"):
-    with open(output_file, "w", newline="") as csvfile:
+def process_pdb_files(dir, output_file="SS_features.csv"):
+    output_path = os.path.join(os.getcwd(), output_file)
+    with open(output_path, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["File", "Res", "SS", "ASA", "Phi", "Psi", "Theta(i-1=>i+1)", "Tau(i-2=>i+2)"])
         
-        for pdb_file in pdb_files:
-            print(f"Procesando {pdb_file}...")
-            file_name = os.path.basename(pdb_file)
-            SS = SS_extraction(pdb_file)
-            ASA = ASA_extraction(pdb_file)
-            PHI_PSI = phi_psi_extraction(pdb_file)
-            THETA_TAU = theta_tau_extraction(pdb_file)
-            
-            for res_id in SS:
-                writer.writerow([pdb_file, res_id, SS[res_id], ASA.get(res_id, "-"), PHI_PSI.get(res_id, ("-", "-"))[0],
-                                 PHI_PSI.get(res_id, ("-", "-"))[1], THETA_TAU.get(res_id, ("-", "-"))[0],
-                                 THETA_TAU.get(res_id, ("-", "-"))[1]])
+        for folder in os.listdir(dir):
+            folder_path = os.path.join(dir, folder)
+            if os.path.isdir(folder_path):
+                # Construct the path to the protein.pdb inside the folder
+                pdb_file = os.path.join(folder_path, 'protein.pdb')
+                # Check if the protein.pdb file exists
+                if os.path.exists(pdb_file):
+                    print(f"Procesando {pdb_file}...")
+                    SS = SS_extraction(pdb_file)
+                    ASA = ASA_extraction(pdb_file)
+                    PHI_PSI = phi_psi_extraction(pdb_file)
+                    THETA_TAU = theta_tau_extraction(pdb_file)
+                    
+                    for res_id in SS:
+                        writer.writerow([pdb_file, res_id, SS[res_id], ASA.get(res_id, "-"), PHI_PSI.get(res_id, ("-", "-"))[0],
+                                        PHI_PSI.get(res_id, ("-", "-"))[1], THETA_TAU.get(res_id, ("-", "-"))[0],
+                                        THETA_TAU.get(res_id, ("-", "-"))[1]])
     print(f"Archivo CSV guardado como {output_file}")
 
 # ------ Ejecutar el script ------
 if __name__ == "__main__":
-    pdb_files = ["../../input/1a2b_1/protein.pdb", 
-                 "../../input/1a2n_1/protein.pdb"
-    ] 
-    process_pdb_files(pdb_files)
+    dir = "../../input/"
+    process_pdb_files(dir)

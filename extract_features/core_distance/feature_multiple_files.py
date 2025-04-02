@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from Bio import PDB
 import pandas as pd
@@ -27,8 +28,9 @@ def calculate_centroid(structure):
 
 def save_distances_to_csv(distance_list, output_csv):
     """ Guarda los valores de distancia en un archivo CSV único. """
+    output_path = os.path.join(os.getcwd(), output_csv)
     df = pd.DataFrame(distance_list, columns=["File", "Res", "Distance_to_Core"])
-    df.to_csv(output_csv, index=False)
+    df.to_csv(output_path, index=False)
     print(f"Distancias al núcleo guardadas en {output_csv}")
 
 def distance_to_core_extraction(pdb_file):
@@ -53,20 +55,22 @@ def distance_to_core_extraction(pdb_file):
     print(f"Distancias calculadas para {len(distances)} residuos en {pdb_file}.")
     return distances
 
-def main(pdb_files, output_csv):
+def main(dir, output_csv):
     all_distances = []
-
-    for pdb_file in pdb_files:
-        distance_data = distance_to_core_extraction(pdb_file)
-        all_distances.extend(distance_data)
+    for folder in os.listdir(dir):
+        folder_path = os.path.join(dir, folder)
+        if os.path.isdir(folder_path):
+            # Construct the path to the protein.pdb inside the folder
+            pdb_file = os.path.join(folder_path, 'protein.pdb')
+            # Check if the protein.pdb file exists
+            if os.path.exists(pdb_file):
+                distance_data = distance_to_core_extraction(pdb_file)
+                all_distances.extend(distance_data)
 
     save_distances_to_csv(all_distances, output_csv)
 
 if __name__ == "__main__":
-    pdb_files = [
-        "../../input/1a2b_1/protein.pdb",
-        "../../input/1a2n_1/protein.pdb"
-    ]  # Lista de archivos PDB a procesar
+    dir = "../../input/"
     output_csv = "distances_to_core.csv"
 
-    main(pdb_files, output_csv)
+    main(dir, output_csv)

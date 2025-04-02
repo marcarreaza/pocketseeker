@@ -1,3 +1,4 @@
+import os 
 import numpy as np
 from Bio import PDB
 import pandas as pd
@@ -34,8 +35,9 @@ def calculate_curvature(residue1, residue2, residue3):
 
 def save_concavity_to_csv(concavity_list, output_csv):
     """ Guarda los valores de concavidad en un archivo CSV único. """
+    output_path = os.path.join(os.getcwd(), output_csv)
     df = pd.DataFrame(concavity_list, columns=["File", "Res", "Concavity"])
-    df.to_csv(output_csv, index=False)
+    df.to_csv(output_path, index=False)
     print(f"Concavidad guardada en {output_csv}")
 
 def concavity_extraction(pdb_file):
@@ -65,20 +67,22 @@ def concavity_extraction(pdb_file):
     print(f"Concavidad calculada para {len(residues)} residuos en {pdb_file}.")
     return concavity
 
-def main(pdb_files, output_csv):
+def main(dir, output_csv):
     all_concavity = []
-
-    for pdb_file in pdb_files:
-        concavity_data = concavity_extraction(pdb_file)
-        all_concavity.extend(concavity_data)
+    for folder in os.listdir(dir):
+        folder_path = os.path.join(dir, folder)
+        if os.path.isdir(folder_path):
+            # Construct the path to the protein.pdb inside the folder
+            pdb_file = os.path.join(folder_path, 'protein.pdb')
+            # Check if the protein.pdb file exists
+            if os.path.exists(pdb_file):
+                concavity_data = concavity_extraction(pdb_file)
+                all_concavity.extend(concavity_data)
 
     save_concavity_to_csv(all_concavity, output_csv)
 
 if __name__ == "__main__":
-    pdb_files = [
-        "../../input/1a2b_1/protein.pdb",
-        "../../input/1a2n_1/protein.pdb"
-    ]  # Lista de archivos PDB a procesar
+    dir = "../../input/"
     output_csv = "concavity_values.csv"
     
-    main(pdb_files, output_csv)
+    main(dir, output_csv)
