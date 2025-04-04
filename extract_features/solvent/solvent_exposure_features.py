@@ -30,8 +30,8 @@ def compute_solvent_exposure(pdb_file):
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", pdb_file)
     model = structure[0]
-    # MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'
-    surface = get_surface(model, MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1')
+    # MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1'
+    surface = get_surface(model, MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc')
     HSE = get_HSE(model, 15.0) 
     # List to store information
     data = []
