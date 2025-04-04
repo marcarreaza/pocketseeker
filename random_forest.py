@@ -10,7 +10,7 @@ from joblib import dump
 df = pd.read_csv("extract_features/matriz_con_binding.csv")
 
 # Separar features (X) y etiquetas (y)
-X = df.drop(columns=['Binding_Site'])  # Asegúrate de que 'binding_site' sea la columna con las etiquetas
+X = df.drop(columns=['Res', 'Binding_Site']) 
 y = df['Binding_Site']
 
 # Reemplazar '-' por NaN
