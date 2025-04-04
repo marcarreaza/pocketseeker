@@ -92,8 +92,9 @@ def process_pdb_files(dir, output_file="SS_features.csv"):
                     PHI_PSI = phi_psi_extraction(pdb_file)
                     THETA_TAU = theta_tau_extraction(pdb_file)
                     
+                    pdb = pdb_file.split("/")[-2]
                     for res_id in SS:
-                        writer.writerow([pdb_file, res_id, SS[res_id], ASA.get(res_id, "-"), PHI_PSI.get(res_id, ("-", "-"))[0],
+                        writer.writerow([pdb, res_id, SS[res_id], ASA.get(res_id, "-"), PHI_PSI.get(res_id, ("-", "-"))[0],
                                         PHI_PSI.get(res_id, ("-", "-"))[1], THETA_TAU.get(res_id, ("-", "-"))[0],
                                         THETA_TAU.get(res_id, ("-", "-"))[1]])
     print(f"Archivo CSV guardado como {output_file}")

@@ -39,6 +39,7 @@ def distance_to_core_extraction(pdb_file):
     structure = PDB.PDBParser(QUIET=True).get_structure("protein", pdb_file)
     centroid = calculate_centroid(structure)
     distances = []
+    pdb = pdb_file.split("/")[-2]
 
     for model in structure:
         for chain in model:
@@ -50,9 +51,9 @@ def distance_to_core_extraction(pdb_file):
             for residue in residues:
                 res_id = residue.get_id()[1]
                 distance = calculate_distance_to_core(residue, centroid)
-                distances.append((pdb_file, res_id, distance))
+                distances.append((pdb, res_id, distance))
 
-    print(f"Distancias calculadas para {len(distances)} residuos en {pdb_file}.")
+    print(f"Distancias calculadas para {len(distances)} residuos en {pdb}.")
     return distances
 
 def main(dir, output_csv):

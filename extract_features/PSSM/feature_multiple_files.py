@@ -78,7 +78,7 @@ def parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file):
 
     # Crear el DataFrame con las columnas en el orden correcto
     df = pd.DataFrame(pssm_matrix, columns=list(correct_amino_acids))
-    df.insert(0, "File", pdb_file)  # Agregar la columna con el path completo del archivo PDB
+    df.insert(0, "File", pdb_file.split("/")[-2])  # Agregar la columna con el path completo del archivo PDB
     df.insert(1, "Res", range(1, len(sequence) + 1))  # Agregar la columna de posición
     df["MI"] = mi_matrix  # Asignar MI a cada residuo
     df["DI"] = di_matrix  # Asignar DI a cada residuo

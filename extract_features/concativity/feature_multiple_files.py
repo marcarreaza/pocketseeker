@@ -46,6 +46,7 @@ def concavity_extraction(pdb_file):
     structure = open_pdb(pdb_file)
     model = structure[0]
     concavity = []
+    pdb = pdb_file.split("/")[-2]
 
     for chain in model:
         residues = [res for res in chain if PDB.is_aa(res, standard=True)]  # Filtramos solo residuos estándar
@@ -53,18 +54,18 @@ def concavity_extraction(pdb_file):
             continue  # Si hay menos de 3 residuos en la cadena, no podemos calcular la curvatura
         
         # Agregar el primer residuo con "-"
-        concavity.append((pdb_file, residues[0].get_id()[1], "-"))
+        concavity.append((pdb, residues[0].get_id()[1], "-"))
 
         for i in range(1, len(residues) - 1):
             # Calculamos la curvatura entre tres residuos consecutivos
             curvature = calculate_curvature(residues[i - 1], residues[i], residues[i + 1])
             res_id = residues[i].get_id()[1]
-            concavity.append((pdb_file, res_id, curvature))
+            concavity.append((pdb, res_id, curvature))
 
         # Agregar el último residuo con "-"
-        concavity.append((pdb_file, residues[-1].get_id()[1], "-"))
+        concavity.append((pdb, residues[-1].get_id()[1], "-"))
 
-    print(f"Concavidad calculada para {len(residues)} residuos en {pdb_file}.")
+    print(f"Concavidad calculada para {len(residues)} residuos en {pdb}.")
     return concavity
 
 def main(dir, output_csv):
