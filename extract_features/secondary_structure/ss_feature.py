@@ -3,6 +3,7 @@ import numpy as np
 from Bio import PDB
 from Bio.PDB import PDBParser, PPBuilder
 import os
+import pandas as pd
 
 # Diccionario de conversión de aminoácidos
 d = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -99,7 +100,40 @@ def process_pdb_files(dir, output_file="SS_features.csv"):
                                         THETA_TAU.get(res_id, ("-", "-"))[1]])
     print(f"Archivo CSV guardado como {output_file}")
 
-# ------ Ejecutar el script ------
+
+### Para extraer los features del training set
 if __name__ == "__main__":
     dir = "../../input/"
     process_pdb_files(dir)
+
+
+### Para extraer los features del input
+def ss_feature (file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+
+        SS = SS_extraction(file)
+        ASA = ASA_extraction(file)
+        PHI_PSI = phi_psi_extraction(file)
+        THETA_TAU = theta_tau_extraction(file)
+
+        data = []
+
+        for res_id in SS:
+            row = {
+                "Res": res_id,
+                "SS": SS[res_id],
+                "ASA": ASA.get(res_id, "-"),
+                "Phi": PHI_PSI.get(res_id, ("-", "-"))[0],
+                "Psi": PHI_PSI.get(res_id, ("-", "-"))[1],
+                "Theta(i-1=>i+1)": THETA_TAU.get(res_id, ("-", "-"))[0],
+                "Tau(i-2=>i+2)": THETA_TAU.get(res_id, ("-", "-"))[1]
+            }
+            data.append(row)
+
+        return pd.DataFrame(data)
+        
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")

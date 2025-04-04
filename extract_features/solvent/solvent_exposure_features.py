@@ -30,7 +30,8 @@ def compute_solvent_exposure(pdb_file):
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", pdb_file)
     model = structure[0]
-    surface = get_surface(model, MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc')
+    # MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'
+    surface = get_surface(model, MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1')
     HSE = get_HSE(model, 15.0) 
     # List to store information
     data = []
@@ -62,19 +63,33 @@ def compute_solvent_exposure(pdb_file):
     return pd.DataFrame(data, columns=["Position", "Residue", "Residue_Depth", "HSE-up", "HSE-down", "CN"]).sort_values(by="Position")
 
 # Loop through directories and process each protein
-for folder in os.listdir('../input'):
-    folder_path = os.path.join('../input', folder)
-    if os.path.isdir(folder_path):
-        # Path to the unbound (protein) PDB file
-        protein_pdb = os.path.join(folder_path, 'protein.pdb')
+if __name__ == "__main__":
+    for folder in os.listdir('../input'):
+        folder_path = os.path.join('../input', folder)
+        if os.path.isdir(folder_path):
+            # Path to the unbound (protein) PDB file
+            protein_pdb = os.path.join(folder_path, 'protein.pdb')
 
-        if os.path.exists(protein_pdb):
-            print(f"Processing {protein_pdb}")
+            if os.path.exists(protein_pdb):
+                print(f"Processing {protein_pdb}")
 
-            # Compute residue depth for unbound protein
-            residue_depth_df = compute_solvent_exposure(protein_pdb)
+                # Compute residue depth for unbound protein
+                residue_depth_df = compute_solvent_exposure(protein_pdb)
 
-            # Save the residue depth results to a CSV file
-            output_csv = os.path.join(folder_path, "solvent_exposure_features.csv")
-            residue_depth_df.to_csv(output_csv, index=False)
-            print(f"Saved results to {output_csv}")
+                # Save the residue depth results to a CSV file
+                output_csv = os.path.join(folder_path, "solvent_exposure_features.csv")
+                residue_depth_df.to_csv(output_csv, index=False)
+                print(f"Saved results to {output_csv}")
+
+
+### Para extraer los features del input
+def solvent_feature (file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+
+        return compute_solvent_exposure(file)
+    
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")

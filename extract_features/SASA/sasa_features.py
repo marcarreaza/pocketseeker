@@ -69,23 +69,37 @@ def compute_sasa(pdb_file):
     return df
 
 # Loop through directories and process each protein
-for folder in os.listdir('../input'):
-    folder_path = os.path.join('../input', folder)
-    if os.path.isdir(folder_path):
-        # Path to the unbound (protein) PDB file
-        protein_pdb = os.path.join(folder_path, 'protein.pdb')
+if __name__ == "__main__":
+    for folder in os.listdir('../input'):
+        folder_path = os.path.join('../input', folder)
+        if os.path.isdir(folder_path):
+            # Path to the unbound (protein) PDB file
+            protein_pdb = os.path.join(folder_path, 'protein.pdb')
 
-        if os.path.exists(protein_pdb):
-            print(f"Processing {protein_pdb}")
+            if os.path.exists(protein_pdb):
+                print(f"Processing {protein_pdb}")
 
-            # Compute SASA for unbound protein
-            sasa_unbound_df = compute_sasa(protein_pdb)
+                # Compute SASA for unbound protein
+                sasa_unbound_df = compute_sasa(protein_pdb)
 
-            # Save the SASA results to a CSV file
-            output_csv = os.path.join(folder_path, "sasa_features.csv")
-            sasa_unbound_df.to_csv(output_csv, index=False)
-            print(f"Saved results to {output_csv}")
+                # Save the SASA results to a CSV file
+                output_csv = os.path.join(folder_path, "sasa_features.csv")
+                sasa_unbound_df.to_csv(output_csv, index=False)
+                print(f"Saved results to {output_csv}")
 
+
+### Para extraer los features del input
+def sasa_feature(file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+        print(f"Processing {file}")
+
+        return compute_sasa(file)
+        
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")
 
 
 '''

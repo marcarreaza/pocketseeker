@@ -90,7 +90,7 @@ def core_distance(file):
         structure = parser.get_structure("protein", file)
 
         distance_data = distance_to_core_extraction(file)
-        return pd.DataFrame(distance_data, columns=["File", "Res", "Concavity"])
+        return pd.DataFrame(distance_data, columns=["File", "Res", "Distance_to_Core"])
         
     except Exception as e:
         print(f"{file} is not a pdb file: {e}")
