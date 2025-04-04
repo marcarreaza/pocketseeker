@@ -46,7 +46,10 @@ def concavity_extraction(pdb_file):
     structure = open_pdb(pdb_file)
     model = structure[0]
     concavity = []
-    pdb = pdb_file.split("/")[-2]
+    if __name__ == "__main__":
+        pdb = pdb_file.split("/")[-2]
+    else:
+        pdb = pdb_file
 
     for chain in model:
         residues = [res for res in chain if PDB.is_aa(res, standard=True)]  # Filtramos solo residuos estándar
@@ -82,8 +85,26 @@ def main(dir, output_csv):
 
     save_concavity_to_csv(all_concavity, output_csv)
 
+
+### Para extraer los features del training set
 if __name__ == "__main__":
     dir = "../../input/"
     output_csv = "concavity_values.csv"
     
     main(dir, output_csv)
+
+
+### Para extraer los features del input
+def concavity_feature (file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+
+        concavity_data = concavity_extraction(file)
+        return pd.DataFrame(concavity_data, columns=["File", "Res", "Concavity"])
+        
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")
+
+    

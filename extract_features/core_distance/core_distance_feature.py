@@ -39,7 +39,10 @@ def distance_to_core_extraction(pdb_file):
     structure = PDB.PDBParser(QUIET=True).get_structure("protein", pdb_file)
     centroid = calculate_centroid(structure)
     distances = []
-    pdb = pdb_file.split("/")[-2]
+    if __name__ == "__main__":
+        pdb = pdb_file.split("/")[-2]
+    else:
+        pdb = pdb_file
 
     for model in structure:
         for chain in model:
@@ -70,8 +73,26 @@ def main(dir, output_csv):
 
     save_distances_to_csv(all_distances, output_csv)
 
+
+### Para extraer los features del training set
 if __name__ == "__main__":
     dir = "../../input/"
     output_csv = "distances_to_core.csv"
 
     main(dir, output_csv)
+
+
+### Para extraer los features del input
+def core_distance(file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+
+        distance_data = distance_to_core_extraction(file)
+        return pd.DataFrame(distance_data, columns=["File", "Res", "Concavity"])
+        
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")
+
+    

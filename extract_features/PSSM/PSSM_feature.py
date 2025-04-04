@@ -30,7 +30,7 @@ def save_fasta(sequence, output_fasta):
     else:
         raise ValueError("La secuencia extraída del PDB está vacía.")
 
-def run_psiblast(fasta_file, output_pssm, db="../swissprot/swissprot", iterations=3):
+def run_psiblast(fasta_file, output_pssm, db, iterations=3):
     """ Ejecuta PSI-BLAST para generar la matriz PSSM. """
     if not os.path.exists(fasta_file):
         raise FileNotFoundError(f"El archivo FASTA {fasta_file} no existe.")
@@ -78,7 +78,10 @@ def parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file):
 
     # Crear el DataFrame con las columnas en el orden correcto
     df = pd.DataFrame(pssm_matrix, columns=list(correct_amino_acids))
-    df.insert(0, "File", pdb_file.split("/")[-2])  # Agregar la columna con el path completo del archivo PDB
+    if __name__ == "__main__":
+        pdb_file = pdb_file.split("/")[-2]
+
+    df.insert(0, "File", pdb_file)  # Agregar la columna con el path completo del archivo PDB
     df.insert(1, "Res", range(1, len(sequence) + 1))  # Agregar la columna de posición
     df["MI"] = mi_matrix  # Asignar MI a cada residuo
     df["DI"] = di_matrix  # Asignar DI a cada residuo
@@ -104,7 +107,13 @@ def process_pdb_file(pdb_file):
     
     # Ejecutar PSI-BLAST
     print(f"Ejecutando PSI-BLAST para {pdb_file}...")
-    run_psiblast(fasta_file, pssm_file)
+    
+    if __name__ == "__main__":
+        db = "../swissprot/swissprot"
+    else:
+        db = "../extract_features/swissprot/swissprot"
+
+    run_psiblast(fasta_file, pssm_file, db)
     
     # Procesar PSSM y calcular MI y DI
     print(f"Procesando PSSM y calculando MI/DI para {pdb_file}...")
@@ -124,8 +133,23 @@ def main(dir, output_file):
                 df = process_pdb_file(pdb_file)
                 save_df_to_csv(df, output_file, first_file=(i == 0))  # El primer archivo sobrescribe el CSV
 
+
+### Para extraer los features del training set
 if __name__ == "__main__":
     dir = "../../input/"
     output_file = "pssm_and_coevolution.csv"
 
     main(dir, output_file)
+
+
+### Para extraer los features del input
+def PSSM_feature(file):
+    try:
+        # Intentamos parsear el archivo PDB
+        parser = PDB.PDBParser(QUIET=True)
+        structure = parser.get_structure("protein", file)
+
+        return process_pdb_file(file)
+        
+    except Exception as e:
+        print(f"{file} is not a pdb file: {e}")
