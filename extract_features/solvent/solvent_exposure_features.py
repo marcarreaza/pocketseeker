@@ -30,8 +30,8 @@ def compute_solvent_exposure(pdb_file):
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", pdb_file)
     model = structure[0]
-    # MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1'
-    surface = get_surface(model, MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc')
+    #MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'
+    surface = get_surface(model, MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1')
     HSE = get_HSE(model, 15.0) 
     # List to store information
     data = []
@@ -57,10 +57,14 @@ def compute_solvent_exposure(pdb_file):
                     hse_CN_value = None
 
                 # Append residue depth information
-                data.append([res_id, res_name, depth, hse_CA_value, hse_CB_value, hse_CN_value])
+                data.append([res_id, res_name, depth, 
+                             #hse_CA_value, hse_CB_value, 
+                             hse_CN_value])
     
     # Return a DataFrame with the residue depth results
-    return pd.DataFrame(data, columns=["Position", "Residue", "Residue_Depth", "HSE-up", "HSE-down", "CN"]).sort_values(by="Position")
+    return pd.DataFrame(data, columns=["Position", "Residue", "Residue_Depth", 
+                                       #"HSE-up", "HSE-down", 
+                                       "CN"]).sort_values(by="Position")
 
 # Loop through directories and process each protein
 if __name__ == "__main__":

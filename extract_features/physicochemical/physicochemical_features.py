@@ -36,6 +36,7 @@ def get_physicochemical_feature (pdb_file):
         res_id = residue.get_id()[1]
         res_name = residue.get_resname()
         na = len(residue)
+        com = tuple(residue.center_of_mass())
         if res_name in dict_physicochemical_characteristics:
             residue_data.append([
                 res_id,  # Position
@@ -43,12 +44,14 @@ def get_physicochemical_feature (pdb_file):
                 na,  # Number of atoms
                 *(dict_physicochemical_characteristics[res_name]),  # Number of electrostatic charges,
                     # pI, Mass, Enc, Hydrophobicty (Kyte-Doolittle scale), Polarity (Grantham scale) 
-                tuple(residue.center_of_mass())  # Center of mass
+                com[0], 
+                com[1],
+                com[2]
             ])
 
     df = pd.DataFrame(residue_data, columns=[
         "Position", "Residue", "Na", "Nec", "pI", "Mass", "Enc", "Hidrofobicity",
-        "Polarity", "Center_of_mass"
+        "Polarity", "Center_of_mass_x", "Center_of_mass_y", "Center_of_mass_z"
     ])
     print(f"Physicochemical characteristics calculated for {pdb_file}")
     return df.sort_values(by="Position")  # Sort by position
