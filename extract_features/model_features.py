@@ -3,7 +3,10 @@ import os
 import sys
 from Bio.PDB import PDBParser, PDBIO
 
-from concativity.concavity_feature import concavity_feature
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(BASE_DIR)
+
+from concavity.concavity_feature import concavity_feature
 from core_distance.core_distance_feature import core_distance
 from physicochemical.physicochemical_features import physicochemical_feature
 from PSSM.PSSM_feature import PSSM_feature
@@ -12,9 +15,9 @@ from secondary_structure.ss_feature import ss_feature
 from solvent.solvent_exposure_features import solvent_feature
 from site_identifier import site_identifier
 
-               
+ 
 def extract_features (protein_pdb):
-    print(protein_pdb)
+    print(f"Procesing {protein_pdb}")
     # Cargar el archivo PDB
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", protein_pdb)
@@ -83,7 +86,6 @@ if __name__ == "__main__":
                 binding_site_pdb = os.path.join(folder_path, 'site.pdb')
             
                 if os.path.exists(protein_pdb):
-                    print(f"Processing {protein_pdb}")
 
                     df_final = extract_features (protein_pdb)
                     binding_sites = site_identifier(protein_pdb, binding_site_pdb)

@@ -1,7 +1,10 @@
 import os 
+import sys
 import numpy as np
 from Bio import PDB
 import pandas as pd
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def open_pdb(pdb_file):
     """ Abre el archivo PDB y devuelve la estructura """
@@ -38,18 +41,14 @@ def save_concavity_to_csv(concavity_list, output_csv):
     output_path = os.path.join(os.getcwd(), output_csv)
     df = pd.DataFrame(concavity_list, columns=["File", "Res", "Concavity"])
     df.to_csv(output_path, index=False)
-    print(f"Concavidad guardada en {output_csv}")
+    print(f"Concavity values saved in {output_csv.split('/')[-1]}")
 
 def concavity_extraction(pdb_file):
     """ Extrae la concavidad de cada residuo en la estructura """
-    print(f"Procesando archivo PDB: {pdb_file}")
+    print('Calculating concavity')
     structure = open_pdb(pdb_file)
     model = structure[0]
     concavity = []
-    if __name__ == "__main__":
-        pdb = pdb_file.split("/")[-2]
-    else:
-        pdb = pdb_file
 
     for chain in model:
         residues = [res for res in chain if PDB.is_aa(res, standard=True)]  # Filtramos solo residuos estándar
@@ -57,54 +56,41 @@ def concavity_extraction(pdb_file):
             continue  # Si hay menos de 3 residuos en la cadena, no podemos calcular la curvatura
         
         # Agregar el primer residuo con "-"
-        concavity.append((pdb, residues[0].get_id()[1], "-"))
+        concavity.append((pdb_file, residues[0].get_id()[1], "-"))
 
         for i in range(1, len(residues) - 1):
             # Calculamos la curvatura entre tres residuos consecutivos
             curvature = calculate_curvature(residues[i - 1], residues[i], residues[i + 1])
             res_id = residues[i].get_id()[1]
-            concavity.append((pdb, res_id, curvature))
+            concavity.append((pdb_file, res_id, curvature))
 
         # Agregar el último residuo con "-"
-        concavity.append((pdb, residues[-1].get_id()[1], "-"))
+        concavity.append((pdb_file, residues[-1].get_id()[1], "-"))
 
-    print(f"Concavidad calculada para {len(residues)} residuos en {pdb}.")
     return concavity
 
-def main(dir, output_csv):
-    all_concavity = []
-    for folder in os.listdir(dir):
-        folder_path = os.path.join(dir, folder)
-        if os.path.isdir(folder_path):
-            # Construct the path to the protein.pdb inside the folder
-            pdb_file = os.path.join(folder_path, 'protein.pdb')
-            # Check if the protein.pdb file exists
-            if os.path.exists(pdb_file):
-                concavity_data = concavity_extraction(pdb_file)
-                all_concavity.extend(concavity_data)
-
-    save_concavity_to_csv(all_concavity, output_csv)
-
-
-### Para extraer los features del training set
-if __name__ == "__main__":
-    dir = "../../input/"
-    output_csv = "concavity_values.csv"
+def main(pdb_file, output_csv):
+    # Check if the protein.pdb file exists
+    if os.path.exists(pdb_file):
+        concavity_data = concavity_extraction(pdb_file)
+        save_concavity_to_csv(concavity_data, output_csv)
     
-    main(dir, output_csv)
+    else:
+        print(f"{file} does not exist")
 
 
-### Para extraer los features del input
+
+### Function to extract input features
 def concavity_feature (file):
     try:
-        # Intentamos parsear el archivo PDB
-        parser = PDB.PDBParser(QUIET=True)
-        structure = parser.get_structure("protein", file)
-
         concavity_data = concavity_extraction(file)
         return pd.DataFrame(concavity_data, columns=["File", "Res", "Concavity"])
         
     except Exception as e:
-        print(f"{file} is not a pdb file: {e}")
+        print(f"Error calculating concavity values: {e}")
 
-    
+
+### For executing as script
+if __name__ == "__main__":
+    file = sys.argv[1]
+    main(file, os.path.join(BASE_DIR,"concavity.csv"))

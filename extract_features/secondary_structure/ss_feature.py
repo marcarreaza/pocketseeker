@@ -1,9 +1,11 @@
-import csv
+import sys
 import numpy as np
 from Bio import PDB
 from Bio.PDB import PDBParser, PPBuilder
 import os
 import pandas as pd
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Diccionario de conversión de aminoácidos
 d = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -73,41 +75,9 @@ def theta_tau_extraction(pdb_file):
                     THETA[res_i.get_id()[1]] = (f"{theta:.2f}", "-")
     return THETA
 
-# ------ Procesamiento de múltiples archivos PDB ------
-def process_pdb_files(dir, output_file="SS_features.csv"):
-    output_path = os.path.join(os.getcwd(), output_file)
-    with open(output_path, "w", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["File", "Res", "SS", "ASA", "Phi", "Psi", "Theta(i-1=>i+1)", "Tau(i-2=>i+2)"])
-        
-        for folder in os.listdir(dir):
-            folder_path = os.path.join(dir, folder)
-            if os.path.isdir(folder_path):
-                # Construct the path to the protein.pdb inside the folder
-                pdb_file = os.path.join(folder_path, 'protein.pdb')
-                # Check if the protein.pdb file exists
-                if os.path.exists(pdb_file):
-                    print(f"Procesando {pdb_file}...")
-                    SS = SS_extraction(pdb_file)
-                    ASA = ASA_extraction(pdb_file)
-                    PHI_PSI = phi_psi_extraction(pdb_file)
-                    THETA_TAU = theta_tau_extraction(pdb_file)
-                    
-                    pdb = pdb_file.split("/")[-2]
-                    for res_id in SS:
-                        writer.writerow([pdb, res_id, SS[res_id], ASA.get(res_id, "-"), PHI_PSI.get(res_id, ("-", "-"))[0],
-                                        PHI_PSI.get(res_id, ("-", "-"))[1], THETA_TAU.get(res_id, ("-", "-"))[0],
-                                        THETA_TAU.get(res_id, ("-", "-"))[1]])
-    print(f"Archivo CSV guardado como {output_file}")
 
 
-### Para extraer los features del training set
-if __name__ == "__main__":
-    dir = "../../input/"
-    process_pdb_files(dir)
-
-
-### Para extraer los features del input
+### Function to extract input features
 def ss_feature (file):
     try:
         # Intentamos parsear el archivo PDB
@@ -132,8 +102,18 @@ def ss_feature (file):
                 "Tau(i-2=>i+2)": THETA_TAU.get(res_id, ("-", "-"))[1]
             }
             data.append(row)
+        print("Calculating secondary structure")
 
         return pd.DataFrame(data)
         
     except Exception as e:
-        print(f"{file} is not a pdb file: {e}")
+        print(f"Error calculating secondary structure: {e}")
+
+
+### For executing as script
+if __name__ == "__main__":
+    file = sys.argv[1]
+    ss_data = ss_feature(file)
+    output_csv = os.path.join(BASE_DIR, "ss.csv")
+    ss_data.to_csv(output_csv, index=False)
+    print(f"Secondary structure data saved in {output_csv.split('/')[-1]}")

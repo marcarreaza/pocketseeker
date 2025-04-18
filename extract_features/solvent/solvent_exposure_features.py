@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 from Bio.PDB import PDBParser, HSExposure
 from Bio import PDB
@@ -12,7 +13,8 @@ from Bio.PDB.ResidueDepth import residue_depth, get_surface
 #   - Number of Cα atoms in lower half-sphere (HSE-down)
 #   - Contact number (CN)
 
-# Define residue mapping
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 residue_map = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
                 'ILE': 'I', 'PRO': 'P', 'THR': 'T', 'PHE': 'F', 'ASN': 'N', 
                 'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
@@ -30,8 +32,10 @@ def compute_solvent_exposure(pdb_file):
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", pdb_file)
     model = structure[0]
-    #MSMS='../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'
-    surface = get_surface(model, MSMS='../programs/msms_mac/msms.x86_64Darwin.2.6.1')
+    try:
+        surface = get_surface(model, MSMS=os.path.join(BASE_DIR, '../../programs/msms_mac/msms.x86_64Darwin.2.6.1'))
+    except:
+        surface = get_surface(model, MSMS=os.path.join(BASE_DIR,'../../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'))
     HSE = get_HSE(model, 15.0) 
     # List to store information
     data = []
@@ -66,34 +70,21 @@ def compute_solvent_exposure(pdb_file):
                                        #"HSE-up", "HSE-down", 
                                        "CN"]).sort_values(by="Position")
 
-# Loop through directories and process each protein
-if __name__ == "__main__":
-    for folder in os.listdir('../input'):
-        folder_path = os.path.join('../input', folder)
-        if os.path.isdir(folder_path):
-            # Path to the unbound (protein) PDB file
-            protein_pdb = os.path.join(folder_path, 'protein.pdb')
 
-            if os.path.exists(protein_pdb):
-                print(f"Processing {protein_pdb}")
-
-                # Compute residue depth for unbound protein
-                residue_depth_df = compute_solvent_exposure(protein_pdb)
-
-                # Save the residue depth results to a CSV file
-                output_csv = os.path.join(folder_path, "solvent_exposure_features.csv")
-                residue_depth_df.to_csv(output_csv, index=False)
-                print(f"Saved results to {output_csv}")
-
-
-### Para extraer los features del input
+### Function to extract input features
 def solvent_feature (file):
     try:
-        # Intentamos parsear el archivo PDB
-        parser = PDB.PDBParser(QUIET=True)
-        structure = parser.get_structure("protein", file)
-
-        return compute_solvent_exposure(file)
+        solvent_data = compute_solvent_exposure(file)
+        return solvent_data
     
     except Exception as e:
-        print(f"{file} is not a pdb file: {e}")
+        print(f"Error extracting solvent exposure data: {e}")
+
+
+### For executing as script
+if __name__ == "__main__":
+    file = sys.argv[1]
+    solvent_data = compute_solvent_exposure(file)
+    output_csv = os.path.join(BASE_DIR, "solvent_exposerue.csv")
+    solvent_data.to_csv(output_csv, index=False)
+    print(f"Solvent exposure data saved in {output_csv.split('/')[-1]}")

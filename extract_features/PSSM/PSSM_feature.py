@@ -1,11 +1,14 @@
 import os
+import sys
 import subprocess
 import numpy as np
 import pandas as pd
 from Bio import PDB, SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import seq1  # Conversión de código de tres letras a una
+from Bio.SeqUtils import seq1  
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Definir el orden correcto de los aminoácidos según el encabezado
 correct_amino_acids = "ARNDCQEGHILKMFPSTWYV"
@@ -45,7 +48,7 @@ def run_psiblast(fasta_file, output_pssm, db, iterations=3):
         if not os.path.exists(output_pssm):
             raise FileNotFoundError(f"Error: PSI-BLAST no generó el archivo {output_pssm}")
     except subprocess.CalledProcessError as e:
-        print(f"Error ejecutando PSI-BLAST: {e}")
+        print(f"Error while executing PSI-BLAST: {e}")
         exit(1)
 
 def parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file):
@@ -66,7 +69,7 @@ def parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file):
         pssm_data.append(list(map(int, tokens[2:22])))  # Extrae las 20 primeras columnas (de la 2 a la 21)
 
     if len(pssm_data) != len(sequence):
-        print(f"Advertencia: El número de filas en la matriz PSSM no coincide con la longitud de la secuencia ({len(sequence)}).")
+        print(f"Warning: The number of rows in the PSSM matrix does not match the length of the sequence ({len(sequence)}).")
 
     pssm_matrix = np.array(pssm_data)
 
@@ -94,7 +97,7 @@ def save_df_to_csv(df, output_file, first_file=False):
     mode = "w" if first_file else "a"  # "w" para el primer archivo (sobrescribe), "a" para el resto (añade)
     header = first_file  # Solo escribe el encabezado en el primer archivo
     df.to_csv(output_path, sep=",", index=False, mode=mode, header=header)
-    print(f"Datos guardados en {output_file}")
+    print(f"PSSM saved in {output_file}")
 
 def process_pdb_file(pdb_file):
     """ Procesa un solo archivo PDB y devuelve su DataFrame de resultados. """
@@ -106,50 +109,40 @@ def process_pdb_file(pdb_file):
     save_fasta(sequence, fasta_file)
     
     # Ejecutar PSI-BLAST
-    print(f"Ejecutando PSI-BLAST para {pdb_file}...")
+    print(f"Executing PSI-BLAST...")
     
-    if __name__ == "__main__":
-        db = "../swissprot/swissprot"
-    else:
-        db = "../extract_features/swissprot/swissprot"
+    db = os.path.join(BASE_DIR,"../swissprot/swissprot")
 
     run_psiblast(fasta_file, pssm_file, db)
     
     # Procesar PSSM y calcular MI y DI
-    print(f"Procesando PSSM y calculando MI/DI para {pdb_file}...")
     df = parse_pssm_and_calculate_MI_DI(pssm_file, sequence, pdb_file)
 
     return df
 
-def main(dir, output_file):
+def main(pdb_file, output_file):
     """ Procesa múltiples archivos PDB y guarda los resultados en un único CSV, sobrescribiendo si ya existe. """
-    for i, folder in enumerate(os.listdir(dir)):
-        folder_path = os.path.join(dir, folder)
-        if os.path.isdir(folder_path):
-            # Construct the path to the protein.pdb inside the folder
-            pdb_file = os.path.join(folder_path, 'protein.pdb')
-            # Check if the protein.pdb file exists
-            if os.path.exists(pdb_file):
-                df = process_pdb_file(pdb_file)
-                save_df_to_csv(df, output_file, first_file=(i == 0))  # El primer archivo sobrescribe el CSV
+    # Check if the protein.pdb file exists
+    if os.path.exists(pdb_file):
+        df = process_pdb_file(pdb_file)
+        save_df_to_csv(df, output_file, first_file=True)  # El primer archivo sobrescribe el CSV
 
 
-### Para extraer los features del training set
-if __name__ == "__main__":
-    dir = "../../input/"
-    output_file = "pssm_and_coevolution.csv"
-
-    main(dir, output_file)
-
-
-### Para extraer los features del input
+### Function to extract input features
 def PSSM_feature(file):
     try:
-        # Intentamos parsear el archivo PDB
-        parser = PDB.PDBParser(QUIET=True)
-        structure = parser.get_structure("protein", file)
-
-        return process_pdb_file(file)
+        PSSM_data = process_pdb_file(file)
+        return PSSM_data
         
     except Exception as e:
-        print(f"{file} is not a pdb file: {e}")
+        print(f"Error during the PSSM extraction or MI/DI calculation: {e}")
+
+
+### For executing as script
+if __name__ == "__main__":
+    file = sys.argv[1]
+    main(file, os.path.join(BASE_DIR, "PSSM.csv"))
+    files = ['protein.fasta', 'protein.pssm']
+    for file in files:
+        if os.path.exists(file):
+            os.remove(file)

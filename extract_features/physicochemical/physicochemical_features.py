@@ -1,8 +1,12 @@
 import os
+import sys
 import pandas as pd
 from Bio import PDB
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def get_physicochemical_feature (pdb_file):
+    print(f"Calculating physicochemical data")
     parser = PDB.PDBParser(QUIET=True)
     model = parser.get_structure("protein", pdb_file)[0]
 
@@ -53,39 +57,25 @@ def get_physicochemical_feature (pdb_file):
         "Position", "Residue", "Na", "Nec", "pI", "Mass", "Enc", "Hidrofobicity",
         "Polarity", "Center_of_mass_x", "Center_of_mass_y", "Center_of_mass_z"
     ])
-    print(f"Physicochemical characteristics calculated for {pdb_file}")
     return df.sort_values(by="Position")  # Sort by position
 
 
-### Para extraer los features del training set
-if __name__ == "__main__":
-    for folder in os.listdir('../input'):
-        folder_path = os.path.join('../input', folder)
-        if os.path.isdir(folder_path):
-            # Construct the path to the protein.pdb inside the folder
-            protein_pdb = os.path.join(folder_path, 'protein.pdb')
-            # Check if the protein.pdb file exists
-            if os.path.exists(protein_pdb):
-                print(f"Processing {protein_pdb}")
-                # Processing code
-                parser = PDB.PDBParser(QUIET=True)
-                df = get_physicochemical_feature(protein_pdb)
-            
-                # Save as CSV
-                output_file = os.path.join(folder_path, "physicochemical_features.csv")
-                df.to_csv(output_file, index=False)
-                print(f"Matrix saved to {output_file}")
 
 
-### Para extraer los features del input
+### Function to extract input features
 def physicochemical_feature (file):
     try:
-        # Intentamos parsear el archivo PDB
-        parser = PDB.PDBParser(QUIET=True)
-        structure = parser.get_structure("protein", file)
-        print(f"Processing {file}")
-
-        return get_physicochemical_feature(file)
+        physicochemical_data = get_physicochemical_feature(file)
+        return physicochemical_data
 
     except Exception as e:
-        print(f"{file} is not a pdb file: {e}")
+        print(f"Error calculating physicochemical data: {e}")
+
+
+### For executing as script
+if __name__ == "__main__":
+    file = sys.argv[1]
+    physicochemical_data = get_physicochemical_feature(file)
+    output_csv = os.path.join(BASE_DIR, "physicochemical.csv")
+    physicochemical_data.to_csv(output_csv, index=False)
+    print(f"Physicochemical data saved in {output_csv.split('/')[-1]}")
