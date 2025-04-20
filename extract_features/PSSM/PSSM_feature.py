@@ -8,7 +8,8 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqUtils import seq1  
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.append(BASE_DIR)
 
 # Definir el orden correcto de los aminoácidos según el encabezado
 correct_amino_acids = "ARNDCQEGHILKMFPSTWYV"
@@ -111,7 +112,7 @@ def process_pdb_file(pdb_file):
     # Ejecutar PSI-BLAST
     print(f"Executing PSI-BLAST...")
     
-    db = os.path.join(BASE_DIR,"../swissprot/swissprot")
+    db = os.path.join(BASE_DIR,"programs/swissprot/swissprot")
 
     run_psiblast(fasta_file, pssm_file, db)
     

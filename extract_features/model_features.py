@@ -1,10 +1,12 @@
 import pandas as pd
 import os
+import argparse
 import sys
 from Bio.PDB import PDBParser, PDBIO
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
+
 
 from concavity.concavity_feature import concavity_feature
 from core_distance.core_distance_feature import core_distance
@@ -13,11 +15,17 @@ from PSSM.PSSM_feature import PSSM_feature
 from SASA.sasa_features import sasa_feature
 from secondary_structure.ss_feature import ss_feature
 from solvent.solvent_exposure_features import solvent_feature
-from site_identifier import site_identifier
+from programs.site_identifier import site_identifier
+from programs.processing import processing_dataset
+from programs.processing import processing
+from model.random_forest import random_forest
+
+pd.set_option('future.no_silent_downcasting', True)
+
 
  
 def extract_features (protein_pdb):
-    print(f"Procesing {protein_pdb}")
+    print(f"Processing {protein_pdb}")
     # Cargar el archivo PDB
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", protein_pdb)
@@ -49,6 +57,7 @@ def extract_features (protein_pdb):
     io = PDBIO()
     io.set_structure(structure)
     io.save("filter_pdb.pdb")
+    processing("filter_pdb.pdb")
 
     concavity = concavity_feature("filter_pdb.pdb")
     distance_to_core = core_distance("filter_pdb.pdb")
@@ -57,7 +66,8 @@ def extract_features (protein_pdb):
     ss = ss_feature ("filter_pdb.pdb")
     sasa = sasa_feature("filter_pdb.pdb")
     solvent = solvent_feature ("filter_pdb.pdb")
-
+    print(ss.head())
+    print(sasa.head())
     df_final = pd.concat([
         concavity,
         distance_to_core["Distance_to_Core"],
@@ -76,29 +86,71 @@ def extract_features (protein_pdb):
 
     return df_final
 
-if __name__ == "__main__":
-    dfs = []
-    for folder in os.listdir('../input'):
-            folder_path = os.path.join('../input', folder)
+def model_features(input_folder, output_folder):
+    all_features = []
+    processing_dataset(input_folder)
+    for folder in os.listdir(input_folder):
+        try:
+            folder_path = os.path.join(input_folder, folder)
             if os.path.isdir(folder_path):
                 # Path to the unbound (protein) PDB file
                 protein_pdb = os.path.join(folder_path, 'protein.pdb')
                 binding_site_pdb = os.path.join(folder_path, 'site.pdb')
+                binding_site_txt = os.path.join(folder_path, 'site.txt')
             
                 if os.path.exists(protein_pdb):
-
-                    df_final = extract_features (protein_pdb)
-                    binding_sites = site_identifier(protein_pdb, binding_site_pdb)
+                    df_features = extract_features (protein_pdb)
+                    if os.path.exists(binding_site_pdb):
+                        binding_sites = site_identifier(protein_pdb, binding_site_pdb=binding_site_pdb)
+                    elif os.path.exists(binding_site_txt):
+                        binding_sites = site_identifier(protein_pdb, binding_site_txt=binding_site_txt)
+                    
+                    protein_output = os.path.join(output_folder, "features", folder)
+                    os.makedirs(protein_output, exist_ok=True)
+                    binding_sites.to_csv(os.path.join(protein_output, "binding.csv"), index=False)
                     binding_sites = binding_sites.drop(columns=["Residue"])
-                    binding_sites["Binding_Site"] = binding_sites["Binding_Site"].replace({"Yes" : 1, "No" : 0})
+                    binding_sites["Binding_Site"] = (
+                        binding_sites["Binding_Site"]
+                        .replace({"Yes": 1, "No": 0})
+                        .astype(int)
+                    )
 
-                    df_merged = df_final.merge(binding_sites, how='left', left_on='Res', right_on='Position')
-                    df_merged = df_merged.drop(columns='Position')
-                    df_merged = df_merged.drop(columns=["File"])
 
-                    df_merged.to_csv(os.path.join(folder_path, "features.csv"), index=False)
+                    df_final = df_features.merge(binding_sites, how='left', left_on='Res', right_on='Position')
+                    df_final = df_final.drop(columns='Position')
+                    df_final = df_final.drop(columns=["File"])
+                    df_final.to_csv(os.path.join(protein_output, "features.csv"), index=False)
 
-                    dfs.append(df_merged)
+                    all_features.append(df_final)
+        except Exception as e:
+            print(f"Failed to process {folder}: {e}")
+    if all_features:
+        final_df = pd.concat(all_features, ignore_index=True)
+        final_path = os.path.join(output_folder, "features", "total_features.csv")
+        final_df.to_csv(final_path, index=False)
+        print(f"All features saved to {final_path}")
 
-    df_final = pd.concat(dfs, ignore_index=True)
-    df_final.to_csv("total_features.csv", index=False)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process protein folders and extract features.")
+    parser.add_argument("-i", "--input_folder", required=True, help="Directory containing protein folders.")
+    parser.add_argument("-o", "--output_folder", default='results', help="Directory to store output features.")
+    args = parser.parse_args()
+
+    output_features_path = os.path.join(args.output_folder, "features")
+    os.makedirs(output_features_path, exist_ok=True)
+
+    # Run feature extraction
+    model_features(args.input_folder, args.output_folder)
+
+    # Path to final feature CSV
+    final_path = os.path.join(output_features_path, "total_features.csv")
+
+    # If the file exists, train the model
+    if os.path.exists(final_path):
+        print(f"Running model training using: {final_path}")
+        df = pd.read_csv(final_path)
+        random_forest(df, args.output_folder)
+    else:
+        print(f"total_features.csv not found at {final_path}. Skipping training.")
+

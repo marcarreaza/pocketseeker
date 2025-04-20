@@ -4,19 +4,25 @@ import argparse
 import pandas as pd
 import joblib
 import numpy as np
+if not hasattr(np, 'int'):
+    np.int = int
+
 from Bio import PDB
 import warnings
 import requests
 import shutil
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print(BASE_DIR)
 from extract_features.model_features import extract_features
 from programs.run_chimera import run_chimera
 
 warnings.filterwarnings("ignore")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def predict_binding_sites(file, output_folder=None):
     df_final = extract_features(file)
+    print(df_final)
     model = joblib.load(os.path.join(BASE_DIR, 'model/random_forest_binding_site_model.joblib'))
     X = df_final.drop(columns=['Res'])
     X.replace('-', np.nan, inplace=True)
@@ -29,7 +35,7 @@ def predict_binding_sites(file, output_folder=None):
 
     y_proba = model.predict_proba(X)[:, 1]
     y_pred = (y_proba >= 0.5).astype(int)
-
+    print(df_final)
     df_predicted = pd.DataFrame({
         'Res': df_final["Res"],
         'Binding_sites': y_pred,
@@ -107,6 +113,7 @@ def main():
     parser.add_argument('-ch', '--chimera', action='store_true', help='Open Chimera after analysis (single file only).')
 
     args = parser.parse_args()
+    
 
     if args.file:
         file = args.file

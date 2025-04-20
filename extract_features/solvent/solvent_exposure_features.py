@@ -13,7 +13,8 @@ from Bio.PDB.ResidueDepth import residue_depth, get_surface
 #   - Number of Cα atoms in lower half-sphere (HSE-down)
 #   - Contact number (CN)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.append(BASE_DIR)
 
 residue_map = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
                 'ILE': 'I', 'PRO': 'P', 'THR': 'T', 'PHE': 'F', 'ASN': 'N', 
@@ -21,6 +22,7 @@ residue_map = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
                 'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
 def get_HSE(model, RADIUS):
+    print("Calculating Solvent exposure values")
     # Calculate the solvent exposure for CA, CB, and CN atoms with a specified radius
     HSE_up = PDB.HSExposure.HSExposureCA(model, RADIUS)
     HSE_down = PDB.HSExposure.HSExposureCB(model, RADIUS)
@@ -33,9 +35,9 @@ def compute_solvent_exposure(pdb_file):
     structure = parser.get_structure("protein", pdb_file)
     model = structure[0]
     try:
-        surface = get_surface(model, MSMS=os.path.join(BASE_DIR, '../../programs/msms_mac/msms.x86_64Darwin.2.6.1'))
+        surface = get_surface(model, MSMS=os.path.join(BASE_DIR,'programs/msms_mac/msms.x86_64Darwin.2.6.1'))
     except:
-        surface = get_surface(model, MSMS=os.path.join(BASE_DIR,'../../programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'))
+        surface = get_surface(model, MSMS=os.path.join(BASE_DIR,'programs/msms/msms.x86_64Linux2.2.6.1.staticgcc'))
     HSE = get_HSE(model, 15.0) 
     # List to store information
     data = []

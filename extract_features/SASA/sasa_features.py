@@ -4,7 +4,8 @@ import pandas as pd
 from Bio import PDB
 from Bio.PDB import DSSP, ShrakeRupley
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.append(BASE_DIR)
 
 # Define residue mapping
 residue_map = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
