@@ -2,7 +2,15 @@
 
 In this tutorial, you’ll train PocketSeeker using your own protein structures and annotated binding sites.
 
-### 📁 Contents of `train_your_own/`
+### 🛠️ Train the model
+
+From within the main folder, to train the model use the following command:
+
+```bash
+python3 pocketseeker.py -train_model -i tutorial/train_model/input -i tutorial/train_model/results
+``
+
+### 📁 Contents of the input data
 
 Each subfolder represents one protein and should include:
 
@@ -22,24 +30,19 @@ And **one** of the following options for binding site annotation:
   6	L
   ```
 
-> 📌 Only **PDB** and **MOL2** formats are supported.  
+> 📌 Only **PDB** and **MOL2** formats are supported.
+
 > You can mix `site.pdb` and `residues.txt` formats across different proteins in your training dataset.
 
-### 🛠️ Train the model
-
-From within the `train_your_own/` folder, use the following command:
-
-```bash
-python pocketseeker.py -train_model /input
 ```
 
 ### 📂 Output
 
-- A trained model will be created and saved in the working directory.
-- You may see logs or summary files depending on your implementation (e.g., accuracy reports, model files).
+By default, a results/ folder will be created in your working directory. This folder will contain:
+- random_forest_binding_site_model.joblib: The trained Random Forest model ready to make predictions.
+- metrics.txt: A summary of model performance, including accuracy and other evaluation metrics.
+- features/: A subfolder containing:
+    -- total_features.csv: Combined features from all processed proteins.
+    -- one CSV file per protein, detailing the extracted features individually.
 
-Once trained, the model can be used with PocketSeeker on new protein inputs just like in the prediction tutorial.
-
----
-
-Enjoy exploring protein binding sites with **PocketSeeker**! 🧬✨
+Once trained, you can use the model with PocketSeeker to predict binding sites in new protein structures.
