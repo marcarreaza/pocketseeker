@@ -8,7 +8,7 @@ From within the main folder, to train the model use the following command:
 
 ```bash
 python3 pocketseeker.py -train_model -i tutorial/train_model/input -i tutorial/train_model/results
-``
+```
 
 ### 📁 Contents of the input data
 
