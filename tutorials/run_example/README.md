@@ -21,10 +21,10 @@ By default, a results/ folder will be created in your working directory. This fo
 Example output (`results/binding_sites_predictions.csv`):
 ```
 Res	Binding_sites	Score
-1	No	0.03
-2	No	0.04
-3	No	0.07
-4	No	0.05
+1	No	            0.03
+2	No	            0.04
+3	No	            0.07
+4	No	            0.05
 ```
 
 Each number corresponds to the position of a predicted ligand-binding residue.
