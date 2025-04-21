@@ -39,10 +39,24 @@ And **one** of the following options for binding site annotation:
 ### 📂 Output
 
 By default, a results/ folder will be created in your working directory. This folder will contain:
-- random_forest_binding_site_model.joblib: The trained Random Forest model ready to make predictions.
-- metrics.txt: A summary of model performance, including accuracy and other evaluation metrics.
-- features/: A subfolder containing:
-    -- total_features.csv: Combined features from all processed proteins.
-    -- one CSV file per protein, detailing the extracted features individually.
+- **`random_forest_binding_site_model.joblib`**  
+  The trained Random Forest model, ready to make predictions.
 
-Once trained, you can use the model with PocketSeeker to predict binding sites in new protein structures.
+- **`metrics.txt`**  
+  A summary of the model’s performance, including accuracy and other evaluation metrics.
+
+- **`features/`** *(subfolder)*  
+  Contains:
+  - **`total_features.csv`**  
+    A combined table of features extracted from all processed proteins.
+  - **One CSV file per protein**  
+    Each file contains the detailed features extracted from that specific protein.
+
+---
+
+Once trained, you can use the model with **PocketSeeker** to predict binding sites in new protein structures.
+
+---
+
+Enjoy! 🧬✨
+
