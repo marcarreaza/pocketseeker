@@ -26,6 +26,7 @@ pd.set_option('future.no_silent_downcasting', True)
  
 def extract_features (protein_pdb):
     print(f"\nProcessing {protein_pdb}")
+    processing(protein_pdb)
     # Cargar el archivo PDB
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", protein_pdb)

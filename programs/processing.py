@@ -12,16 +12,27 @@ def processing(pdb_file):
             if not lines:
                 print(f"Warning: {pdb_file} is empty.")
                 return
+
             # Check if already processed
             if lines[0].startswith("HEADER") and "MODEL" in lines[1]:
                 print(f"{pdb_file} is already processed. Skipping.")
                 return
 
-            lines = lines[1:-1]  # Remove first line
+            # Filter out lines that start with "ATOM"
+            atom_lines = [line for line in lines if line.startswith("ATOM")]
+
+            if not atom_lines:
+                print(f"No ATOM lines found in {pdb_file}.")
+                return
+
+            # Optional: Remove first line (header), add new header
             new_header = ["HEADER    Sample PDB file\n", "MODEL        1\n"]
-        with open(pdb_file, "w") as file:
-            file.writelines(new_header + lines + ["ENDMDL\n"])
-            print(f"Processed {pdb_file}")
+            
+            # Write the filtered ATOM lines and new header to the file
+            with open(pdb_file, "w") as file:
+                file.writelines(new_header + atom_lines + ["ENDMDL\n"])
+                print(f"Processed {pdb_file}")
+
     except Exception as e:
         print(f"Failed to process {pdb_file}: {e}")
 
