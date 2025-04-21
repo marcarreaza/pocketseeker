@@ -34,7 +34,7 @@ And **one** of the following options for binding site annotation:
 
 > You can mix `site.pdb` and `residues.txt` formats across different proteins in your training dataset.
 
-```
+
 
 ### 📂 Output
 
