@@ -25,7 +25,7 @@ pd.set_option('future.no_silent_downcasting', True)
 
  
 def extract_features (protein_pdb):
-    print(f"Processing {protein_pdb}")
+    print(f"\nProcessing {protein_pdb}")
     # Cargar el archivo PDB
     parser = PDBParser(QUIET=True)
     structure = parser.get_structure("protein", protein_pdb)
@@ -66,8 +66,6 @@ def extract_features (protein_pdb):
     ss = ss_feature ("filter_pdb.pdb")
     sasa = sasa_feature("filter_pdb.pdb")
     solvent = solvent_feature ("filter_pdb.pdb")
-    print(ss.head())
-    print(sasa.head())
     df_final = pd.concat([
         concavity,
         distance_to_core["Distance_to_Core"],
@@ -86,13 +84,24 @@ def extract_features (protein_pdb):
 
     return df_final
 
+def display_progress_bar(current, total):
+    bar_length = 40  # Length of the progress bar
+    progress = (current / total) * bar_length
+    bar = "█" * int(progress) + "-" * (bar_length - int(progress))
+    sys.stdout.write(f"\r[{bar}] {current}/{total} folders processed\n")
+    sys.stdout.flush()
+
+
 def model_features(input_folder, output_folder):
     all_features = []
     processing_dataset(input_folder)
-    for folder in os.listdir(input_folder):
+    folders = [folder for folder in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, folder))]
+    total_folders = len(folders)
+    for i,folder in enumerate(folders, start = 1):
+        folder_path = os.path.join(input_folder, folder)
         try:
-            folder_path = os.path.join(input_folder, folder)
             if os.path.isdir(folder_path):
+                display_progress_bar(i, total_folders)
                 # Path to the unbound (protein) PDB file
                 protein_pdb = os.path.join(folder_path, 'protein.pdb')
                 binding_site_pdb = os.path.join(folder_path, 'site.pdb')
@@ -130,6 +139,21 @@ def model_features(input_folder, output_folder):
         final_df.to_csv(final_path, index=False)
         print(f"All features saved to {final_path}")
 
+def check_protein_folders(input_folder):
+    for protein_name in os.listdir(input_folder):
+        protein_path = os.path.join(input_folder, protein_name)
+        if not os.path.isdir(protein_path):
+            continue
+        required_file = os.path.join(protein_path, "protein.pdb")
+        site_files = [
+            os.path.join(protein_path, "site.pdb"),
+            os.path.join(protein_path, "site.txt")
+        ]
+        if not os.path.exists(required_file) or not any(os.path.exists(f) for f in site_files):
+            print(f"Skipping {protein_name}: missing required files.")
+            continue
+        yield protein_path
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process protein folders and extract features.")
@@ -141,7 +165,12 @@ if __name__ == "__main__":
     os.makedirs(output_features_path, exist_ok=True)
 
     # Run feature extraction
-    model_features(args.input_folder, args.output_folder)
+    valid_folders = list(check_protein_folders(args.input_folder))
+    if not valid_folders:
+        print("No valid protein folders found. Exiting.")
+        exit(1)
+
+    model_features(valid_folders, args.output_folder)
 
     # Path to final feature CSV
     final_path = os.path.join(output_features_path, "total_features.csv")

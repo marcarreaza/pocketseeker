@@ -45,7 +45,7 @@ def run_psiblast(fasta_file, output_pssm, db, iterations=3):
     ]
     
     try:
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         if not os.path.exists(output_pssm):
             raise FileNotFoundError(f"Error: PSI-BLAST no generó el archivo {output_pssm}")
     except subprocess.CalledProcessError as e:
