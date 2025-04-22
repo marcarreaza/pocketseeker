@@ -114,7 +114,7 @@ Allows the user to specify a custom Random Forest model (in `.joblib` format) in
 ## 🗂️Repository Structure
 
 The repository is organized as follows:
-````
+```
 ├── docs                       # Supplementary documentation and project figures
 │   ├── features_info.pdf      # Description of input features used by the model
 │   ├── metrics_info.pdf       # Model evaluation metrics and performance plots
