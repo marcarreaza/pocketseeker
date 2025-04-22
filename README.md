@@ -20,19 +20,82 @@ cd pocketseeker
 
 ### 2. Run the setup script
 Execute the provided setup script to create and configure the Conda environment:
-
-`bash setup.sh`
+```
+bash setup.sh
+```
 
 This script automatically creates a Conda environment named pocketseeker with all required dependencies. It detects whether the system is running on Linux or macOS and installs the appropriate binaries and tools accordingly.
 
 ### 3. Activate the environment
 Once the setup is complete, activate the environment manually:
-
-`conda activate pocketseeker`
+```
+conda activate pocketseeker
+```
 
 ### 4. (Optional) Add PocketSeeker to your system PATH
 To run pocketseeker.py from any location as a command-line tool, you can add the project folder to your system PATH. For example:
-
-`export PATH=$PATH:/path/to/pocketseeker`
+```
+export PATH=$PATH:/path/to/pocketseeker
+```
 
 Replace /path/to/pocketseeker with the absolute path to the cloned repository. You can also add this line to your .bashrc, .zshrc, or equivalent shell config file to make it permanent.
+
+
+## ️🔎 How pocketseeker.py Works
+
+pocketseeker.py is the main script of the PocketSeeker application. It provides multiple execution modes depending on the input type and desired output behavior. Below is a summary of the most common usage options:
+
+### 1. Analyze a single PDB file
+```
+python3 pocketseeker.py protein.pdb
+```
+Analyzes the provided PDB file and creates a folder called `results/` (if it doesn't exist) in the current working directory. Two files are generated:
+
+- `binding_sites_predictions.csv`: CSV matrix with residue-wise binding site predictions.
+- `modified_{file_basename}.pdb`: A modified PDB file with predicted binding residues marked for visualization.
+
+### 2. Visualize results directly in UCSF Chimera
+```
+python3 pocketseeker.py -ch protein.pdb
+```
+After analysis, opens UCSF Chimera to visualize the structure with the predicted binding sites highlighted.
+
+***Note:*** This only works when analyzing single files.
+
+### 3. Analyze all PDB files in a directory
+```
+python3 pocketseeker.py -d path/to/directory
+```
+Scans the specified folder for .pdb files and processes them one by one. Each result is saved in `results/{file_basename}/`.
+
+### 4. Analyze multiple local PDB files
+```
+python3 pocketseeker.py -local_many protein1.pdb protein2.pdb ...
+```
+Processes each PDB file listed and stores the outputs separately in `results/{file_basename}/` for each input.
+
+### 5. Download and analyze a protein from the PDB Bank
+```
+python3 pocketseeker.py -online PDB_ID
+```
+Downloads the structure of the specified PDB ID from the Protein Data Bank, runs the analysis, and saves the output in the `results/` directory.
+
+### 6. Analyze multiple proteins from the PDB Bank
+```
+python3 pocketseeker.py -online_many PDB_ID1 PDB_ID2 ...
+```
+Downloads and analyzes each of the listed PDB IDs. Each result is stored in `results/{PDB_ID}/`.
+
+### 7. Specify a custom output directory
+```
+python3 pocketseeker.py -o output/
+```
+Use this option to override the default output location (`results/`) with a custom folder path.
+
+### 8. Use a custom machine learning model
+```
+python3 pocketseeker.py -model custom_model.joblib
+```
+Allows the user to specify a custom Random Forest model (in `.joblib` format) instead of using the default pre-trained model included in the repository.
+
+
