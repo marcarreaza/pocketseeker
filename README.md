@@ -11,7 +11,7 @@
 
 ## Table of Contents
 
-- [Workflow](#-workflow)
+- [Workflow](#workflow)
 - [Project Description](#-project-description)
 - [Setup Instructions](#️-setup-instructions)
 - [How pocketseeker.py Works](#-how-pocketseekerpy-works)
