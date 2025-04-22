@@ -38,7 +38,7 @@ To run pocketseeker.py from any location as a command-line tool, you can add the
 export PATH=$PATH:/path/to/pocketseeker
 ```
 
-Replace /path/to/pocketseeker with the absolute path to the cloned repository. You can also add this line to your .bashrc, .zshrc, or equivalent shell config file to make it permanent.
+Replace `/path/to/pocketseeker` with the absolute path to the cloned repository. You can also add this line to your `.bashrc`, `.zshrc`, or equivalent shell config file to make it permanent.
 
 
 ## ️🔎 How pocketseeker.py Works
