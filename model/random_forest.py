@@ -5,13 +5,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from joblib import dump
 import os
+from imblearn.over_sampling import SMOTE
 
 
 def random_forest(df, output_folder):
     df = df.dropna(subset=['Binding_Site'])
 
     # Separar features (X) y etiquetas (y)
-    X = df.drop(columns=['Res', 'Binding_Site']) 
+    X = df.drop(columns=['Res', 'Binding_Site'])
     y = df['Binding_Site']
 
     # Reemplazar '-' por NaN
@@ -24,10 +25,20 @@ def random_forest(df, output_folder):
     # 2. División en train y test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    # Aplicar SMOTE para balancear la clase minoritaria
+    train_df = X_train.copy()
+    train_df['label'] = y_train
+    train_df_clean = train_df.dropna()
+    X_train_clean = train_df_clean.drop('label', axis=1)
+    y_train_clean = train_df_clean['label']
+    
+    sm = SMOTE(random_state=42)
+    X_train_res, y_train_res = sm.fit_resample(X_train_clean, y_train_clean)
+
 
     # 3. Entrenamiento del modelo
-    clf = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced')
-    clf.fit(X_train, y_train)
+    clf = RandomForestClassifier(n_estimators=100, random_state=42)
+    clf.fit(X_train_res, y_train_res)
 
 
     # 4. Predicciones
