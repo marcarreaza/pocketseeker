@@ -11,15 +11,15 @@
 
 ## Table of Contents
 
-- [Workflow](#workflow)
-- [Project Description](#-project-description)
-- [Setup Instructions](#️-setup-instructions)
-- [How pocketseeker.py Works](#-how-pocketseekerpy-works)
-- [Repository Structure](#️-repository-structure)
-- [Web Application](#-web-application)
-- [Technologies Used](#-technologies-used)
-- [License](#-license)
-- [Contact](#-contact)
+[Workflow](#workflow)
+[Project Description](#-project-description)
+[Setup Instructions](#️-setup-instructions)
+[How pocketseeker.py Works](#-how-pocketseekerpy-works)
+[Repository Structure](#️-repository-structure)
+[Web Application](#-web-application)
+[Technologies Used](#-technologies-used)
+[License](#-license)
+[Contact](#-contact)
 
 ------------------------------------------------------------------------
 
