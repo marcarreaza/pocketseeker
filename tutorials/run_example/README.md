@@ -8,7 +8,7 @@ In this tutorial, you'll predict the ligand-binding sites of a sample protein st
 Use the following command to run PocketSeeker on the example protein:
 
 ```bash
-python3 pocketseeker.py -i tutorial/run_example/1a2n_1.pdb -o tutorial/run_example/results
+python3 pocketseeker.py tutorial/run_example/1a2n_1.pdb -o tutorial/run_example/results
 ```
 
 ### 📂 Output

@@ -11,9 +11,8 @@ import requests
 import shutil
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-from extract_features.model_features import extract_features, check_protein_folders
+from extract_features.model_features import extract_features, check_protein_folders, model_features
 from programs.run_chimera import run_chimera
-from extract_features.model_features import model_features
 from model.random_forest import random_forest
 
 warnings.filterwarnings("ignore")
@@ -39,15 +38,8 @@ def predict_binding_sites(file, mod, output_folder=None):
         'Score': y_proba
     })
 
-    # Fill the GAPs in the binding sites
+    # Mark the binding sites residues
     binding_residues = df_predicted[df_predicted['Binding_sites'] == 1]["Res"].tolist()
-    for i in range(len(binding_residues)):
-        j = i + 1
-        try:
-            if binding_residues[i] + 2 == binding_residues[j]:
-                binding_residues.append(binding_residues[i] + 1)
-        except IndexError:
-            break
 
     parser = PDB.PDBParser(QUIET=True)
     structure = parser.get_structure("protein", file)
@@ -91,6 +83,23 @@ def predict_binding_sites(file, mod, output_folder=None):
 
     print(f"\nResults saved in: {output_dir}")
     return output_pdb
+
+
+def download_pdb(pdb_id):
+    pdb_id = pdb_id.lower()
+    url = f"https://files.rcsb.org/download/{pdb_id}.pdb"
+    output_path = os.path.join(BASE_DIR, "downloads", f"{pdb_id}.pdb")
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(output_path, "w") as f:
+            f.write(response.text)
+        return output_path
+    else:
+        print(f"Could not download file for ID '{pdb_id}'. Verify that the ID is correct.")
+        sys.exit(1)
 
 
 def main():
@@ -183,7 +192,7 @@ def main():
         else:
             print("No valid prediction input provided. Use -h for help.")
 
-        if args.chimera and args.file:
+        if args.chimera:
             run_chimera(output_pdb)
 
 
