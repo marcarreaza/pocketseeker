@@ -1,11 +1,11 @@
 # PocketSeeker: A ligand binding site predictor for proteins
-![PocketSeeker Logo](programs/img/logo.png)
+![PocketSeeker Logo](./programs/img/logo.png)
 
 ## Workflow
 
 Below is a simplified diagram of the workflow of this proyect.
 
-![Workflow Diagram](programs/img/esq.jpeg)
+![Workflow Diagram](./programs/img/esq.jpeg)
 
 ---
 
