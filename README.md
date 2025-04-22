@@ -1,4 +1,13 @@
 # PocketSeeker: A ligand binding site predictor for proteins
+![PocketSeeker Logo](programs/img/logo.png)
+
+## Workflow
+
+Below is a simplified diagram of the workflow of this proyect.
+
+![Workflow Diagram](programs/img/esq.jpeg)
+
+---
 
 ## 📌 Project Description
 
@@ -6,8 +15,7 @@ PocketSeeker is a bioinformatics tool designed to predict the binding site resid
 
 This tool aims to assist researchers in identifying potential functional regions of proteins, which can be crucial for tasks such as drug design, protein engineering, or functional annotation.
 
-
-
+---
 
 ## ⚙️ Setup Instructions
 
@@ -42,8 +50,7 @@ export PATH=$PATH:/path/to/pocketseeker
 
 Replace `/path/to/pocketseeker` with the absolute path to the cloned repository. You can also add this line to your `.bashrc`, `.zshrc`, or equivalent shell config file to make it permanent.
 
-
-
+---
 
 ## ️🔎 How pocketseeker.py Works
 
@@ -102,8 +109,7 @@ python3 pocketseeker.py -model custom_model.joblib
 ```
 Allows the user to specify a custom Random Forest model (in `.joblib` format) instead of using the default pre-trained model included in the repository.
 
-
-
+---
 
 ## 🗂️Repository Structure
 
@@ -131,10 +137,10 @@ The repository is organized as follows:
 └── tutorials                  # Example workflows for users
     ├── run_example            # Sample inputs and instructions for model inference
     └── train_model            # Scripts and examples for retraining the model
+
 ```
 
-
-
+---
 
 ## 🌐 Web Application
 
