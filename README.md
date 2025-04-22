@@ -7,6 +7,8 @@ PocketSeeker is a bioinformatics tool designed to predict the binding site resid
 This tool aims to assist researchers in identifying potential functional regions of proteins, which can be crucial for tasks such as drug design, protein engineering, or functional annotation.
 
 
+
+
 ## ⚙️ Setup Instructions
 
 To get started with PocketSeeker, follow the steps below to set up the project on your local machine.
@@ -39,6 +41,8 @@ export PATH=$PATH:/path/to/pocketseeker
 ```
 
 Replace `/path/to/pocketseeker` with the absolute path to the cloned repository. You can also add this line to your `.bashrc`, `.zshrc`, or equivalent shell config file to make it permanent.
+
+
 
 
 ## ️🔎 How pocketseeker.py Works
@@ -128,3 +132,20 @@ The repository is organized as follows:
     ├── run_example            # Sample inputs and instructions for model inference
     └── train_model            # Scripts and examples for retraining the model
 ```
+
+
+
+
+## 🌐 Web Application
+
+A user-friendly web interface is available to facilitate access to PocketSeeker without requiring local installation or command-line usage. The application is hosted at the following address:
+
+**[https://pocketseeker-web-1.onrender.com](https://pocketseeker-web-1.onrender.com)**
+
+Features:
+- 🔬 Upload PDB files or input UniProt/PDB IDs for automatic retrieval.
+- ⚙️ Run the full pipeline of feature extraction and binding site prediction.
+- 📈 Visualize prediction results interactively.
+- ⬇️ Download CSV output with residue-level predictions.
+This platform is intended to support non-technical users and facilitate quick exploration of protein structures and potential binding sites.
+
