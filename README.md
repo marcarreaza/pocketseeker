@@ -59,7 +59,7 @@ pocketseeker.py is the main script of the PocketSeeker application. It provides 
 
 ### 1. Analyze a single PDB file
 ```
-python3 pocketseeker.py protein.pdb
+pocketseeker.py protein.pdb
 ```
 Analyzes the provided PDB file and creates a folder called `results/` (if it doesn't exist) in the current working directory. Two files are generated:
 
@@ -68,7 +68,7 @@ Analyzes the provided PDB file and creates a folder called `results/` (if it doe
 
 ### 2. Visualize results directly in UCSF Chimera
 ```
-python3 pocketseeker.py -ch protein.pdb
+pocketseeker.py -ch protein.pdb
 ```
 After analysis, opens UCSF Chimera to visualize the structure with the predicted binding sites highlighted.
 
@@ -76,37 +76,37 @@ After analysis, opens UCSF Chimera to visualize the structure with the predicted
 
 ### 3. Analyze all PDB files in a directory
 ```
-python3 pocketseeker.py -d path/to/directory
+pocketseeker.py -d path/to/directory
 ```
 Scans the specified folder for .pdb files and processes them one by one. Each result is saved in `results/{file_basename}/`.
 
 ### 4. Analyze multiple local PDB files
 ```
-python3 pocketseeker.py -local_many protein1.pdb protein2.pdb ...
+pocketseeker.py -local_many protein1.pdb protein2.pdb ...
 ```
 Processes each PDB file listed and stores the outputs separately in `results/{file_basename}/` for each input.
 
 ### 5. Download and analyze a protein from the PDB Bank
 ```
-python3 pocketseeker.py -online PDB_ID
+pocketseeker.py -online PDB_ID
 ```
 Downloads the structure of the specified PDB ID from the Protein Data Bank, runs the analysis, and saves the output in the `results/` directory.
 
 ### 6. Analyze multiple proteins from the PDB Bank
 ```
-python3 pocketseeker.py -online_many PDB_ID1 PDB_ID2 ...
+pocketseeker.py -online_many PDB_ID1 PDB_ID2 ...
 ```
 Downloads and analyzes each of the listed PDB IDs. Each result is stored in `results/{PDB_ID}/`.
 
 ### 7. Specify a custom output directory
 ```
-python3 pocketseeker.py -o output/
+pocketseeker.py -o output/
 ```
 Use this option to override the default output location (`results/`) with a custom folder path.
 
 ### 8. Use a custom machine learning model
 ```
-python3 pocketseeker.py -model custom_model.joblib
+pocketseeker.py -model custom_model.joblib
 ```
 Allows the user to specify a custom Random Forest model (in `.joblib` format) instead of using the default pre-trained model included in the repository.
 
