@@ -2,6 +2,27 @@
 
 # PocketSeeker: A ligand binding site predictor for proteins
 
+![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![Python](https://img.shields.io/badge/python-3.9+-blue)
+![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS-lightgrey)
+![Version](https://img.shields.io/badge/version-1.0.0-orange)
+
+------------------------------------------------------------------------
+
+## Table of Contents
+
+- [Workflow](#-workflow)
+- [Project Description](#-project-description)
+- [Setup Instructions](#️-setup-instructions)
+- [How pocketseeker.py Works](#-how-pocketseekerpy-works)
+- [Repository Structure](#️-repository-structure)
+- [Web Application](#-web-application)
+- [Technologies Used](#-technologies-used)
+- [License](#-license)
+- [Contact](#-contact)
+
+------------------------------------------------------------------------
+
 ## Workflow
 
 Below is a simplified diagram of the workflow of this proyect.
@@ -179,3 +200,19 @@ Features:
 - Visualize prediction results interactively. 
 - Download CSV output with residue-level predictions. 
 This platform is intended to support non-technical users and facilitate quick exploration of protein structures and potential binding sites.
+
+------------------------------------------------------------------------
+
+## 💻 Technologies Used
+
+- Python 3.9+
+- scikit-learn – Machine Learning
+- Biopython – Bioinformatics tools
+- UCSF Chimera – Visualization
+- External tools: `DSSP`, `MSMS`, `PSI-BLAST`
+
+------------------------------------------------------------------------
+
+## 📄 License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
