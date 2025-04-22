@@ -1,6 +1,5 @@
-<img src="programs/img/logo.png" alt="Logo de PocketSeeker" width="500"/>
-
-# A ligand binding site predictor for proteins
+# PocketSeeker: A ligand binding site predictor for proteins
+![Logo de PocketSeeker](programs/img/logo.png)
 
 ## Workflow
 
