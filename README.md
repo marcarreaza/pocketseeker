@@ -13,9 +13,10 @@ To get started with PocketSeeker, follow the steps below to set up the project o
 
 ### 1. Clone the repository
 Clone the PocketSeeker repository using Git:
-
-`git clone https://github.com/marcarreaza/pocketseeker.git`
-`cd pocketseeker`
+```
+git clone https://github.com/marcarreaza/pocketseeker.git
+cd pocketseeker
+```
 
 ### 2. Run the setup script
 Execute the provided setup script to create and configure the Conda environment:
