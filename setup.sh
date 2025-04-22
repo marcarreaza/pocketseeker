@@ -28,7 +28,7 @@ conda env create -n $ENV_NAME -f "$ENV_FILE"
 # Descomprimir archivos de la base de datos swissprot
 SWISSPROT_DIR="programs/swissprot"
 
-if [ -d "$SWISSPROT_DIR" ]; then
+if [ -d "$SWISSPROT_DIR" ]; then 
     echo "Uncompressing files in '$SWISSPROT_DIR'..."
     gunzip -v "$SWISSPROT_DIR"/*.gz
 else
