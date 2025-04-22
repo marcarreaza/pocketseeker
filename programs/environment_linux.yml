@@ -8,6 +8,7 @@ channels:
 dependencies:
   - pip=25.0.1
   - python=3.11.0
+  - blast=2.14.0
   - pip:
       - biopython==1.85
       - mdtraj==1.10.3

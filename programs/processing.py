@@ -103,6 +103,6 @@ def processing_dataset(input_folder):
             try:
                 validate_site_txt(site_txt)
             except Exception as e:
-                print(f"❌ {e}")
+                print(f" {e}")
         if missing:
-            raise FileNotFoundError(f"❌ Missing in {folder}: {', '.join(missing)}")
+            raise FileNotFoundError(f"Missing in {folder}: {', '.join(missing)}")

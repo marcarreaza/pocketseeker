@@ -145,9 +145,15 @@ def check_protein_folders(input_folder):
         protein_path = os.path.join(input_folder, protein_name)
         if not os.path.isdir(protein_path):
             continue
-        required_file = os.path.join(protein_path, "protein.pdb")
+        required_file = [
+            os.path.join(protein_path, "protein.pdb"),
+            os.path.join(protein_path, "protein.mol2"),
+            os.path.join(protein_path, "protein.MOL2")
+        ]
         site_files = [
             os.path.join(protein_path, "site.pdb"),
+            os.path.join(protein_path, "site.mol2"),
+            os.path.join(protein_path, "site.MOL2"),
             os.path.join(protein_path, "site.txt")
         ]
         if not os.path.exists(required_file) or not any(os.path.exists(f) for f in site_files):
