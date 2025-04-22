@@ -1,28 +1,27 @@
+#!/usr/bin/env python
 import sys
 import os
 import argparse
 import pandas as pd
 import joblib
 import numpy as np
-
 from Bio import PDB
 import warnings
 import requests
 import shutil
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-print(BASE_DIR)
 from extract_features.model_features import extract_features, check_protein_folders
 from programs.run_chimera import run_chimera
 from extract_features.model_features import model_features
 from model.random_forest import random_forest
 
 warnings.filterwarnings("ignore")
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def predict_binding_sites(file, output_folder=None):
+def predict_binding_sites(file, mod, output_folder=None):
     df_final = extract_features(file)
-    model = joblib.load(os.path.join(BASE_DIR, 'model/random_forest_binding_site_model.joblib'))
+    model = joblib.load(mod)
     X = df_final.drop(columns=['Res'])
     X.replace('-', np.nan, inplace=True)
     X = pd.get_dummies(X, columns=['SS'])
@@ -106,14 +105,15 @@ def main():
                "The output for -train_model is the features retrieved and the model"
     )
     parser.add_argument("file", nargs="?", help="Local PDB file to analyse (default)")
-    parser.add_argument('--d', '--directory', help='Analyse all files located in one local directory.')
-    parser.add_argument('--local_many', nargs='+', help='Analyse many local pdb files.')
-    parser.add_argument('--online', help='Get a pdb file from the pdb server and analyse that.')
-    parser.add_argument('--online_many', nargs='+', help='Get many pdb files from the pdb server and analyse them.')
+    parser.add_argument('-d', '--directory', help='Analyse all files located in one local directory.')
+    parser.add_argument('-local_many', nargs='+', help='Analyse many local pdb files.')
+    parser.add_argument('-online', help='Get a pdb file from the pdb server and analyse that.')
+    parser.add_argument('-online_many', nargs='+', help='Get many pdb files from the pdb server and analyse them.')
     parser.add_argument("-o", "--output", default='results', help="Directory to store output features.")
     parser.add_argument('-ch', '--chimera', action='store_true', help='Open Chimera after analysis (single file only).')
     parser.add_argument("-train_model", action="store_true", help="Train a random forest model from extracted features.")
     parser.add_argument("-i", "--input_folder", help="Input directory with protein folders for feature extraction (required if -train_model).")
+    parser.add_argument("-model", default=os.path.join(BASE_DIR, "model/random_forest_binding_site_model.joblib"), help="Specify your random forest model.")
 
     args = parser.parse_args()
     print("\n" + "#" * 60)
@@ -154,25 +154,31 @@ def main():
         print("#" * 60 + "\n")
         
         if args.file:
-            output_pdb = predict_binding_sites(args.file, args.output)
+            output_pdb = predict_binding_sites(args.file, args.model, args.output)
 
         elif args.directory:
             for file in os.listdir(args.directory):
                 if file.endswith(".pdb"):
-                    predict_binding_sites(os.path.join(args.directory, file), args.output)
+                    filename = os.path.basename(file)
+                    file_basename = os.path.splitext(filename)[0]
+                    predict_binding_sites(os.path.join(args.directory, file), args.model, os.path.join(args.output, f"{file_basename}"))
 
         elif args.local_many:
             for file in args.local_many:
-                predict_binding_sites(file, args.output)
+                filename = os.path.basename(file)
+                file_basename = os.path.splitext(filename)[0]
+                predict_binding_sites(file, args.model, os.path.join(args.output, f"{file_basename}"))
 
         elif args.online:
             file = download_pdb(args.online)
-            output_pdb = predict_binding_sites(file, args.output)
+            output_pdb = predict_binding_sites(file, args.model, args.output)
 
         elif args.online_many:
             for pdb_id in args.online_many:
                 file = download_pdb(pdb_id)
-                predict_binding_sites(file, args.output)
+                filename = os.path.basename(file)
+                file_basename = os.path.splitext(filename)[0]
+                predict_binding_sites(file, args.model, os.path.join(args.output, f"{file_basename}"))
 
         else:
             print("No valid prediction input provided. Use -h for help.")
