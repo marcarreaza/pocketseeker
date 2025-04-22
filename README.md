@@ -99,3 +99,32 @@ python3 pocketseeker.py -model custom_model.joblib
 Allows the user to specify a custom Random Forest model (in `.joblib` format) instead of using the default pre-trained model included in the repository.
 
 
+
+
+## 🗂️Repository Structure
+
+The repository is organized as follows:
+````
+├── docs                     # Supplementary documentation and project figures
+│   ├── features_info.pdf    # Description of input features used by the model
+│   ├── metrics_info.pdf     # Model evaluation metrics and performance plots
+│   └── suppl_info.pdf       # Additional supplementary information
+├── extract_features         # Modules for computing structural and biochemical features
+│   ├── PSSM
+│   ├── SASA
+│   ├── concavity
+│   ├── core_distance
+│   ├── model_features.py
+│   ├── physicochemical
+│   ├── secondary_structure
+│   └── solvent
+├── model                    # Trained model and script for inference
+│   ├── random_forest.py     # Model definition and prediction logic
+│   └── random_forest_binding_site_model.joblib # Our pre-trained Random Forest model
+├── pocketseeker.py          # Main script to run feature extraction and prediction
+├── programs                 # External binaries and third-party tools (e.g., DSSP, MSMS)
+├── setup.sh                 # Environment setup script 
+└── tutorials                # Example workflows for users
+    ├── run_example          # Sample inputs and instructions for model inference
+    └── train_model          # Scripts and examples for retraining the model
+```
